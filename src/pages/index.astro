@@ -1,0 +1,145 @@
+---
+import Arrow from '../components/Arrow.astro';
+import Base from '../layouts/Base.astro';
+import Earth from '../components/Earth.astro';
+import ServiceGrid from '../components/ServiceGrid.astro';
+import ContactBand from '../components/ContactBand.astro';
+import { experience } from '../data/company';
+---
+
+<Base
+  title="Zeltranet — Software Engineering & Systems Integration"
+  description="Independent software engineering in Vientiane, Laos. Business applications, systems integration, and AI automation for Thailand, Malaysia, Laos, and beyond."
+>
+  <section class="hero container">
+    <div class="hero-copy">
+      <p class="eyebrow">
+        <span class="status-dot"></span> INDEPENDENT SOFTWARE ENGINEERING
+      </p>
+      <h1>
+        Zeltranet<span class="hero-period">.</span>
+      </h1>
+      <p class="hero-specialties">
+        Software Engineering · Systems Integration · AI Automation
+      </p>
+      <p class="hero-description">
+        Reliable software systems.
+        <br />
+        <span>Built for the way you work.</span>
+      </p>
+      <p class="hero-intro">
+        We build software that connects your systems, simplifies your
+        operations, and helps your business work more efficiently.
+      </p>
+      <div class="hero-actions">
+        <a href="/contact/" class="button button-primary">
+          Discuss your project <Arrow />
+        </a>
+        <a href="/services/" class="text-link">
+          Explore our services <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+    <Earth />
+  </section>
+  <div class="region-strip">
+    <div class="container">
+      <span class="mono">BASED IN LAOS. WORKING ACROSS BORDERS.</span>
+      <p>
+        Vientiane <span>/</span> Thailand <span>/</span> Malaysia <span>/</span>{' '}
+        International
+      </p>
+    </div>
+  </div>
+  <section class="section container" aria-labelledby="build-heading">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">01 / CAPABILITIES</span>
+        <h2 id="build-heading">
+          What we build<span class="blue-text">.</span>
+        </h2>
+      </div>
+      <p>
+        Practical engineering.
+        <br />
+        From a single workflow to a connected business.
+      </p>
+    </div>
+    <ServiceGrid />
+    <div class="section-end">
+      <span class="mono">
+        BUILT AROUND YOUR BUSINESS. ENGINEERED FOR THE LONG TERM.
+      </span>
+      <a class="text-link" href="/services/">
+        Our services <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </section>
+  <section class="experience-section">
+    <div class="container section">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">02 / ENGINEERING BACKGROUND</span>
+          <h2>
+            Selected experience<span class="blue-text">.</span>
+          </h2>
+        </div>
+        <p>
+          Real-world context.
+          <br />
+          Thoughtful technical decisions.
+        </p>
+      </div>
+      <div class="experience-layout">
+        <div class="experience-intro">
+          <h3>
+            Engineering informed
+            <br />
+            by practical experience.
+          </h3>
+          <p>
+            Zeltranet draws on its founder’s experience with healthcare
+            platforms, data collection systems, business applications, and cloud
+            deployments.
+          </p>
+          <p class="attribution">
+            This background comes from work performed before Zeltranet. It is
+            founder experience, not a portfolio of Zeltranet client projects.
+          </p>
+          <a href="/experience/" class="text-link">
+            Explore the background <span aria-hidden="true">→</span>
+          </a>
+        </div>
+        <div class="experience-list">
+          {experience.map((item, index) => (
+            <a class="experience-row" href="/experience/">
+              <span class="mono">0{index + 1}</span>
+              <h3>{item.title}</h3>
+              <span class="row-arrow">
+                <Arrow />
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="about-strip container">
+    <span class="eyebrow">03 / OUR APPROACH</span>
+    <h2>
+      Understand the business.
+      <br />
+      Engineer the right system.
+    </h2>
+    <div>
+      <p>
+        We start with how your business operates. Then we choose the technology,
+        define the scope, and build software that your team can depend on.
+      </p>
+      <a class="text-link" href="/about/">
+        About Zeltranet <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </section>
+  <ContactBand />
+</Base>

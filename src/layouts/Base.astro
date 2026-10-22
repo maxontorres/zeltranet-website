@@ -1,0 +1,99 @@
+---
+import Arrow from '../components/Arrow.astro';
+import '../styles/global.css';
+import Mark from '../components/Mark.astro';
+interface Props {
+  title: string;
+  description: string;
+  noindex?: boolean;
+}
+const { title, description, noindex = false } = Astro.props;
+const canonical = Astro.site
+  ? new URL(Astro.url.pathname, Astro.site).href
+  : undefined;
+const nav = [
+  ['Home', '/'],
+  ['Services', '/services/'],
+  ['Experience', '/experience/'],
+  ['About', '/about/'],
+  ['Contact', '/contact/'],
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0b1019" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta
+      name="robots"
+      content={canonical && !noindex ? 'index, follow' : 'noindex, nofollow'}
+    />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Zeltranet" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {canonical && <meta property="og:url" content={canonical} />}
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    {Astro.site && <link rel="sitemap" href="/sitemap-index.xml" />}
+  </head>
+  <body>
+    <a class="skip-link" href="#main">
+      Skip to content
+    </a>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a href="/" class="brand" aria-label="Zeltranet home">
+          <Mark />
+          <span>
+            ZELTRANET<span class="brand-dot">.</span>
+          </span>
+        </a>
+        <nav aria-label="Main navigation">
+          {nav.map(([label, href]) => (
+            <a
+              href={href}
+              aria-current={Astro.url.pathname === href ? 'page' : undefined}
+            >
+              {label}
+            </a>
+          ))}
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="container footer-main">
+        <a class="brand" href="/" aria-label="Zeltranet home">
+          <Mark />
+          <span>
+            ZELTRANET<span class="brand-dot">.</span>
+          </span>
+        </a>
+        <p>
+          Independent engineering.
+          <br />
+          Connected thinking.
+        </p>
+        <div class="footer-location">
+          <span class="eyebrow">BASED IN VIENTIANE, LAOS</span>
+          <p>Built for business. Across borders.</p>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <span>© {new Date().getUTCFullYear()} Zeltranet</span>
+        <span>SOFTWARE / SYSTEMS / AUTOMATION</span>
+        <a href="/contact/">
+          Let’s talk <Arrow />
+        </a>
+      </div>
+    </footer>
+  </body>
+</html>

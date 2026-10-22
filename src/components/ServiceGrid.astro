@@ -1,0 +1,42 @@
+---
+import { services } from '../data/company';
+interface Props {
+  detailed?: boolean;
+}
+const { detailed = false } = Astro.props;
+---
+
+<div class="service-grid">
+  {services.map((service, i) => (
+    <article class="service-card">
+      <div class="card-top">
+        <span class="mono">{String(i + 1).padStart(2, '0')}</span>
+        <svg
+          width="28"
+          height="28"
+          viewBox="0 0 28 28"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            d={
+              [
+                'M5 7h18v14H5zM5 12h18M10 7v14',
+                'M4 8h8v8H4zM16 12h8v8h-8zM12 12h4M8 16v7h12v-3',
+                'M4 10h7v8H4zM17 10h7v8h-7zM11 14h6M14 5v18',
+                'M5 22V6h12l6 6v10H5ZM17 6v7h6M9 17h10',
+                'M14 4v5M14 19v5M4 14h5M19 14h5M8 8l3 3M17 17l3 3M8 20l3-3M17 11l3-3M10 10h8v8h-8z',
+                'M7 21a5 5 0 0 1-1-10 8 8 0 0 1 15-1 6 6 0 0 1 0 11H7Z',
+              ][i]
+            }
+            stroke="currentColor"
+            stroke-width="1.2"
+          />
+        </svg>
+      </div>
+      <h3>{service.title}</h3>
+      <p>{service.text}</p>
+      {detailed && <p>{service.detail}</p>}
+    </article>
+  ))}
+</div>

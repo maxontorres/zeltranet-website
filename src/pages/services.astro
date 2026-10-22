@@ -1,0 +1,59 @@
+---
+import Base from '../layouts/Base.astro';
+import ServiceGrid from '../components/ServiceGrid.astro';
+import ContactBand from '../components/ContactBand.astro';
+---
+
+<Base
+  title="Services — Zeltranet"
+  description="Business applications, workflow automation, systems integration, modernization, AI integration, and cloud engineering from Zeltranet."
+>
+  <section class="page-intro container">
+    <span class="eyebrow">01 / CAPABILITIES</span>
+    <h1>
+      Software that fits
+      <br />
+      your business<span class="blue-text">.</span>
+    </h1>
+    <p>
+      From a focused internal tool to a connected set of systems, we build
+      around the work your business needs to do.
+    </p>
+  </section>
+  <section
+    class="container section services-detail"
+    aria-label="Engineering services"
+  >
+    <ServiceGrid detailed />
+  </section>
+  <section class="container approach-section">
+    <span class="eyebrow">HOW WE WORK</span>
+    <div class="approach-grid">
+      <article>
+        <span class="mono">01 / UNDERSTAND</span>
+        <h2>Start with the work.</h2>
+        <p>
+          Clarify the problem, current systems, users, and operating constraints
+          before choosing a solution.
+        </p>
+      </article>
+      <article>
+        <span class="mono">02 / BUILD</span>
+        <h2>Keep the scope clear.</h2>
+        <p>
+          Agree on a practical scope and build in reviewable steps, with testing
+          and documentation throughout.
+        </p>
+      </article>
+      <article>
+        <span class="mono">03 / OPERATE</span>
+        <h2>Plan beyond launch.</h2>
+        <p>
+          Prepare for deployment, maintenance, and handover so the system stays
+          useful after delivery.
+        </p>
+      </article>
+    </div>
+  </section>
+  <ContactBand />
+</Base>

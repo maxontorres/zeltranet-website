@@ -1,0 +1,200 @@
+---
+import {
+  grid,
+  land,
+  paths,
+  markets,
+  project,
+  initialRotation,
+} from '../lib/earth';
+const lines = paths(grid, initialRotation);
+const continents = paths(land, initialRotation);
+---
+
+<div class="blueprint earth" data-earth>
+  <div class="blueprint-top">
+    <span>CONNECTED SYSTEMS / ACROSS BORDERS</span>
+    <button type="button" class="earth-toggle" hidden>
+      Pause rotation
+    </button>
+  </div>
+  <div class="earth-stage">
+    <svg
+      class="earth-fallback"
+      viewBox="0 0 540 400"
+      fill="none"
+      aria-hidden="true"
+    >
+      <circle
+        cx="270"
+        cy="200"
+        r="157"
+        stroke="var(--earth-outline)"
+        stroke-width=".8"
+      />
+      <path d={lines.back} stroke="var(--earth-grid-back)" stroke-width=".5" />
+      <path
+        d={lines.front}
+        stroke="var(--earth-grid-front)"
+        stroke-width=".6"
+      />
+      <path
+        d={continents.back}
+        stroke="var(--earth-land-back)"
+        stroke-width=".6"
+      />
+      <path
+        d={continents.front}
+        stroke="var(--earth-land-front)"
+        stroke-width=".8"
+      />
+      {markets.map((point) => {
+        const pos = project(point, initialRotation);
+        return (
+          pos.z > 0 && (
+            <circle cx={pos.x} cy={pos.y} r="2.4" fill="var(--earth-marker)" />
+          )
+        );
+      })}
+    </svg>
+    <canvas class="earth-canvas" aria-hidden="true"></canvas>
+  </div>
+  <div class="blueprint-bottom">
+    <span>VIENTIANE, LAOS</span>
+    <span>WORKING ACROSS BORDERS</span>
+  </div>
+</div>
+<script>
+  import {
+    grid,
+    land,
+    paths,
+    markets,
+    routes,
+    project,
+    initialRotation,
+  } from '../lib/earth';
+  const root = document.querySelector<HTMLElement>('[data-earth]');
+  const canvas = root?.querySelector('canvas');
+  const button = root?.querySelector<HTMLButtonElement>('.earth-toggle');
+  const stage = root?.querySelector<HTMLElement>('.earth-stage');
+  const ctx = canvas?.getContext('2d');
+  if (root && canvas && ctx && button && stage) {
+    const styles = getComputedStyle(root);
+    const readColor = (token: string) => styles.getPropertyValue(token).trim();
+    const colors = {
+      outline: readColor('--earth-outline'),
+      grid_back: readColor('--earth-grid-back'),
+      grid_front: readColor('--earth-grid-front'),
+      land_back: readColor('--earth-land-back'),
+      land_front: readColor('--earth-land-front'),
+      marker: readColor('--earth-marker'),
+      accent: readColor('--color-millennium'),
+      text: readColor('--text'),
+    };
+    const motion = matchMedia('(prefers-reduced-motion: reduce)');
+    let rotation = initialRotation,
+      frame: number | null = null,
+      lastTime = 0;
+    let visible = false,
+      paused = false;
+    function draw() {
+      if (!ctx) return;
+      ctx.clearRect(0, 0, 540, 400);
+      ctx.lineWidth = 0.8;
+      ctx.strokeStyle = colors.outline;
+      ctx.beginPath();
+      ctx.arc(270, 200, 157, 0, Math.PI * 2);
+      ctx.stroke();
+      for (const [lines, back, front, width] of [
+        [grid, colors.grid_back, colors.grid_front, 0.6],
+        [land, colors.land_back, colors.land_front, 0.8],
+      ] as const) {
+        const path = paths(lines, rotation);
+        ctx.lineWidth = width;
+        ctx.strokeStyle = back;
+        ctx.stroke(new Path2D(path.back));
+        ctx.strokeStyle = front;
+        ctx.stroke(new Path2D(path.front));
+      }
+      ctx.strokeStyle = colors.accent;
+      ctx.lineWidth = 1;
+      for (const route of routes) {
+        ctx.beginPath();
+        let pen = false;
+        for (const { point, lift } of route) {
+          const position = project(point, rotation, lift);
+          if (position.z > 0 || position.outside) {
+            if (pen) ctx.lineTo(position.x, position.y);
+            else ctx.moveTo(position.x, position.y);
+            pen = true;
+          } else pen = false;
+        }
+        ctx.stroke();
+      }
+      for (const [index, point] of markets.entries()) {
+        const position = project(point, rotation);
+        if (position.z <= 0) continue;
+        ctx.fillStyle = index === 0 ? colors.text : colors.marker;
+        ctx.beginPath();
+        ctx.arc(position.x, position.y, index === 0 ? 2.8 : 2, 0, Math.PI * 2);
+        ctx.fill();
+        if (index === 0) {
+          ctx.strokeStyle = colors.accent;
+          ctx.beginPath();
+          ctx.arc(position.x, position.y, 6, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+      }
+    }
+    function stop() {
+      if (frame !== null) cancelAnimationFrame(frame);
+      frame = null;
+      lastTime = 0;
+    }
+    function tick(time: number) {
+      if (!lastTime) lastTime = time;
+      const delta = time - lastTime;
+      if (delta >= 1000 / 24) {
+        rotation += (Math.min(delta, 100) / 180000) * Math.PI * 2;
+        lastTime = time;
+        draw();
+      }
+      frame = requestAnimationFrame(tick);
+    }
+    function sync() {
+      stop();
+      if (!root || !button) return;
+      root.dataset.animated = String(!motion.matches);
+      button.hidden = motion.matches;
+      button.textContent = paused ? 'Resume rotation' : 'Pause rotation';
+      if (!motion.matches && !paused && visible && !document.hidden)
+        frame = requestAnimationFrame(tick);
+    }
+    const resize = new ResizeObserver(() => {
+      if (!canvas || !ctx || !stage) return;
+      const width = stage.clientWidth,
+        height = stage.clientHeight;
+      const ratio = Math.min(devicePixelRatio || 1, 1.5);
+      canvas.width = Math.round(width * ratio);
+      canvas.height = Math.round(height * ratio);
+      ctx.setTransform(canvas.width / 540, 0, 0, canvas.height / 400, 0, 0);
+      draw();
+    });
+    resize.observe(stage);
+    const visibility = new IntersectionObserver(([entry]) => {
+      visible = entry?.isIntersecting ?? false;
+      sync();
+    });
+    visibility.observe(root);
+    button.addEventListener('click', () => {
+      paused = !paused;
+      sync();
+    });
+    motion.addEventListener('change', sync);
+    document.addEventListener('visibilitychange', sync);
+    window.addEventListener('pagehide', stop);
+    window.addEventListener('pageshow', sync);
+    sync();
+  }
+</script>

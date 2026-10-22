@@ -1,0 +1,46 @@
+---
+import Base from '../layouts/Base.astro';
+import ContactBand from '../components/ContactBand.astro';
+import { experience } from '../data/company';
+---
+
+<Base
+  title="Founder Experience — Zeltranet"
+  description="The founder experience behind Zeltranet: healthcare platforms, data collection systems, business applications, and cloud deployments."
+>
+  <section class="page-intro container">
+    <span class="eyebrow">02 / ENGINEERING BACKGROUND</span>
+    <h1>
+      Experience behind
+      <br />
+      the engineering<span class="blue-text">.</span>
+    </h1>
+    <p>
+      Zeltranet’s approach is informed by its founder’s work across business
+      software and cloud systems.
+    </p>
+  </section>
+  <section class="container experience-detail">
+    <div class="notice">
+      <span class="eyebrow">A NOTE ON ATTRIBUTION</span>
+      <p>
+        The experience below relates to the founder’s work before Zeltranet,
+        including work performed for previous employers. These are areas of
+        professional experience, not Zeltranet client engagements. No employer
+        or client endorsement is implied.
+      </p>
+    </div>
+    <div class="experience-grid">
+      {experience.map((item, index) => (
+        <article>
+          <span class="eyebrow">
+            0{index + 1} / {item.label}
+          </span>
+          <h2>{item.title}</h2>
+          <p>{item.text}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+  <ContactBand />
+</Base>

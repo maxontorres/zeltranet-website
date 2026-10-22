@@ -1,0 +1,136 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="Contact — Zeltranet"
+  description="Prepare a project enquiry for Zeltranet. Describe your business needs, existing systems, and the software you want to build."
+>
+  <section class="page-intro container">
+    <span class="eyebrow">04 / START A CONVERSATION</span>
+    <h1>
+      What needs
+      <br />
+      to work better<span class="blue-text">?</span>
+    </h1>
+    <p>
+      A new application. A manual process. Systems that don’t talk to each
+      other. Start with the problem your business needs to solve.
+    </p>
+  </section>
+  <section class="container contact-layout">
+    <aside>
+      <h2>A useful starting point.</h2>
+      <p>
+        Tell us what your business does, what is getting in the way, and what a
+        useful outcome would look like.
+      </p>
+      <div class="contact-location">
+        <span class="eyebrow">LOCATION</span>
+        <p>Vientiane, Laos</p>
+        <span class="eyebrow">WORKING WITH BUSINESSES IN</span>
+        <p>
+          Thailand, Malaysia, Laos,
+          <br />
+          and internationally
+        </p>
+      </div>
+      <div class="notice">
+        <span class="eyebrow">CONTACT CHANNEL COMING SOON</span>
+        <p>
+          Direct contact details are not published yet. This form prepares a
+          local enquiry file; it does not send or store your information.
+        </p>
+      </div>
+    </aside>
+    <form id="enquiry-form">
+      <h2>Prepare a project enquiry</h2>
+      <p class="form-intro">
+        Download your draft to keep and share once a contact channel is
+        available.
+      </p>
+      <div class="form-pair">
+        <label>
+          Your name <span aria-hidden="true">*</span>
+          <input name="name" autocomplete="name" required maxlength="120" />
+        </label>
+        <label>
+          Company <span aria-hidden="true">*</span>
+          <input
+            name="company"
+            autocomplete="organization"
+            required
+            maxlength="160"
+          />
+        </label>
+      </div>
+      <label>
+        Work email <span aria-hidden="true">*</span>
+        <input
+          name="email"
+          type="email"
+          autocomplete="email"
+          required
+          maxlength="254"
+        />
+      </label>
+      <label>
+        What would you like to build or improve?{' '}
+        <span aria-hidden="true">*</span>
+        <textarea
+          name="project"
+          rows="6"
+          required
+          minlength="20"
+          maxlength="6000"
+          placeholder="Your current process, the challenge, and what you want to achieve…"
+        ></textarea>
+      </label>
+      <p class="form-note">
+        All fields are required. Everything stays in your browser. No message is
+        sent.
+      </p>
+      <button
+        id="download-enquiry"
+        class="button button-primary"
+        type="submit"
+        disabled
+      >
+        Download enquiry draft <span aria-hidden="true">↓</span>
+      </button>
+      <noscript>
+        <p class="form-note">
+          Enable JavaScript to download a draft, or write your project notes in
+          a text file. Direct contact details will be published here when
+          available.
+        </p>
+      </noscript>
+      <p id="form-status" role="status" aria-live="polite"></p>
+    </form>
+  </section>
+</Base>
+<script>
+  const form = document.querySelector<HTMLFormElement>('#enquiry-form');
+  const button = document.querySelector<HTMLButtonElement>('#download-enquiry');
+  if (form && button) {
+    button.disabled = false;
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+      const data = new FormData(form);
+      const draft = `ZELTRANET — PROJECT ENQUIRY DRAFT\nThis draft has not been sent.\n\nName: ${data.get('name')}\nCompany: ${data.get('company')}\nEmail: ${data.get('email')}\n\nProject\n${data.get('project')}\n`;
+      const url = URL.createObjectURL(
+        new Blob([draft], { type: 'text/plain;charset=utf-8' }),
+      );
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'zeltranet-project-enquiry.txt';
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      const status = document.querySelector('#form-status');
+      if (status)
+        status.textContent =
+          'Your draft download has started. No message has been sent.';
+    });
+  }
+</script>

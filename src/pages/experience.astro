@@ -9,7 +9,6 @@ import { experience } from '../data/company';
   description="The founder experience behind Zeltranet: healthcare platforms, data collection systems, business applications, and cloud deployments."
 >
   <section class="page-intro container">
-    <span class="eyebrow">02 / ENGINEERING BACKGROUND</span>
     <h1>
       Experience behind
       <br />
@@ -31,11 +30,8 @@ import { experience } from '../data/company';
       </p>
     </div>
     <div class="experience-grid">
-      {experience.map((item, index) => (
+      {experience.map((item) => (
         <article>
-          <span class="eyebrow">
-            0{index + 1} / {item.label}
-          </span>
           <h2>{item.title}</h2>
           <p>{item.text}</p>
         </article>

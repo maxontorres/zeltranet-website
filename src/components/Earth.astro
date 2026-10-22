@@ -11,13 +11,7 @@ const lines = paths(grid, initialRotation);
 const continents = paths(land, initialRotation);
 ---
 
-<div class="blueprint earth" data-earth>
-  <div class="blueprint-top">
-    <span>CONNECTED SYSTEMS / ACROSS BORDERS</span>
-    <button type="button" class="earth-toggle" hidden>
-      Pause rotation
-    </button>
-  </div>
+<div class="earth" data-earth>
   <div class="earth-stage">
     <svg
       class="earth-fallback"
@@ -58,10 +52,18 @@ const continents = paths(land, initialRotation);
       })}
     </svg>
     <canvas class="earth-canvas" aria-hidden="true"></canvas>
-  </div>
-  <div class="blueprint-bottom">
-    <span>MEXICO / LAOS</span>
-    <span>WORKING ACROSS BORDERS</span>
+    <button
+      type="button"
+      class="earth-toggle"
+      aria-label="Pause globe rotation"
+      aria-pressed="false"
+      hidden
+    >
+      <svg viewBox="0 0 16 16" aria-hidden="true">
+        <path class="icon-pause" d="M5 3.5v9M11 3.5v9" />
+        <path class="icon-play" d="M5.5 3.5v9l7-4.5z" />
+      </svg>
+    </button>
   </div>
 </div>
 <script>
@@ -168,7 +170,10 @@ const continents = paths(land, initialRotation);
       if (!root || !button) return;
       root.dataset.animated = String(!motion.matches);
       button.hidden = motion.matches;
-      button.textContent = paused ? 'Resume rotation' : 'Pause rotation';
+      button.setAttribute('aria-pressed', String(paused));
+      button.ariaLabel = paused
+        ? 'Resume globe rotation'
+        : 'Pause globe rotation';
       if (!motion.matches && !paused && visible && !document.hidden)
         frame = requestAnimationFrame(tick);
     }

@@ -84,6 +84,15 @@
   --earth-land-front: #8fa8d5;
   --earth-marker: #b7d7ff;
   --glow-orb: rgb(98 141 255 / 0.2);
+  --radius: 14px;
+  --radius-sm: 8px;
+  --card-border: #222c3b;
+  --shadow-card:
+    inset 0 1px 0 rgb(255 255 255 / 0.04), 0 1px 2px rgb(0 0 0 / 0.35),
+    0 12px 32px -12px rgb(0 0 0 / 0.55);
+  --shadow-card-hover:
+    inset 0 1px 0 rgb(255 255 255 / 0.06), 0 2px 4px rgb(0 0 0 / 0.35),
+    0 18px 44px -14px rgb(98 141 255 / 0.22);
 }
 * {
   box-sizing: border-box;
@@ -134,7 +143,6 @@ textarea:focus-visible {
   width: min(1240px, calc(100% - 96px));
   margin-inline: auto;
 }
-.mono,
 .eyebrow {
   font-family: var(--font-mono);
   font-size: 10px;
@@ -225,6 +233,7 @@ nav a[aria-current] {
 }
 nav a:last-child {
   border: 1px solid var(--control-border);
+  border-radius: var(--radius-sm);
   padding: 9px 17px;
   color: var(--text);
 }
@@ -296,18 +305,6 @@ nav a:last-child[aria-current] {
       0 0 70px rgb(98 141 255 / 0.35);
   }
 }
-.hero .eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  font-size: 10px;
-}
-.status-dot {
-  width: 5px;
-  height: 5px;
-  display: inline-block;
-  background: var(--blue);
-}
 .hero h1 {
   font-size: clamp(52px, 5.6vw, 80px);
   letter-spacing: -0.01em;
@@ -346,6 +343,7 @@ nav a:last-child[aria-current] {
   margin-top: 31px;
 }
 .button {
+  border-radius: var(--radius-sm);
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
@@ -381,67 +379,24 @@ nav a:last-child[aria-current] {
 .text-link:hover {
   color: var(--blue);
 }
-.blueprint {
-  color: var(--blue);
+.earth {
   position: relative;
-  align-self: stretch;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   min-width: 0;
-  margin-top: 22px;
-}
-.blueprint-top,
-.blueprint-bottom {
-  font-family: var(--font-mono);
-  font-size: 8px;
-  letter-spacing: 0.12em;
-  color: var(--quiet);
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--line);
-  padding: 10px 0;
-}
-.blueprint-top:before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 22px;
-  height: 2px;
-  background: var(--blue);
-}
-.blueprint-bottom {
-  border-top: 1px solid var(--line);
-  border-bottom: 0;
-}
-.blueprint-art {
-  width: 100%;
-  max-height: 355px;
-  margin: 14px 0;
 }
 .region-strip {
   border-block: 1px solid var(--line);
   background: var(--surface);
 }
 .region-strip .container {
-  display: flex;
-  justify-content: space-between;
-  gap: 24px;
-  align-items: center;
-  padding-block: 19px;
-}
-.region-strip .mono {
-  color: var(--quiet);
-  font-size: 9px;
+  padding-block: 18px;
 }
 .region-strip p {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--muted);
 }
-.region-strip p span {
-  padding: 0 13px;
-  color: var(--quiet);
+.region-strip strong {
+  color: var(--text);
+  font-weight: 600;
 }
 .section {
   padding-block: 78px;
@@ -465,29 +420,33 @@ nav a:last-child[aria-current] {
 .service-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  border-top: 1px solid var(--line);
-  border-left: 1px solid var(--line);
+  gap: 16px;
+}
+.service-card,
+.experience-grid article,
+.approach-grid article {
+  background: var(--panel);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
 }
 .service-card {
-  padding: 29px 29px 31px;
-  border-right: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  background: var(--surface);
-  transition: background 0.15s;
+  padding: 28px 28px 30px;
+  transition:
+    translate 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 .service-card:hover {
-  background: var(--panel-hover);
+  translate: 0 -2px;
+  border-color: rgb(98 141 255 / 0.45);
+  box-shadow: var(--shadow-card-hover);
 }
 .card-top {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 26px;
   color: var(--blue);
-}
-.card-top .mono {
-  font-size: 10px;
-  color: var(--quiet);
 }
 .service-card h3 {
   font-size: 15px;
@@ -501,14 +460,8 @@ nav a:last-child[aria-current] {
 }
 .section-end {
   display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  align-items: center;
+  justify-content: flex-end;
   padding-top: 24px;
-}
-.section-end .mono {
-  font-size: 8px;
-  color: var(--quiet);
 }
 .experience-section {
   background: var(--surface);
@@ -564,18 +517,23 @@ nav a:last-child[aria-current] {
 .experience-intro .text-link {
   margin-top: 25px;
 }
+.experience-list {
+  align-self: start;
+  padding: 6px 24px;
+  background: var(--panel);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+}
 .experience-row {
   display: flex;
   align-items: center;
   gap: 26px;
-  padding: 24px 0;
+  padding: 22px 0;
   border-bottom: 1px solid var(--line);
 }
-.experience-row:first-child {
-  border-top: 1px solid var(--line);
-}
-.experience-row .mono {
-  color: var(--quiet);
+.experience-row:last-child {
+  border-bottom: 0;
 }
 .experience-row h3 {
   font-size: 14px;
@@ -611,7 +569,9 @@ nav a:last-child[aria-current] {
 .contact-band {
   background: var(--panel-accent);
   border: 1px solid var(--line-accent);
-  padding: 35px 40px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: 36px 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -703,15 +663,15 @@ nav a:last-child[aria-current] {
 .approach-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
-  margin-top: 28px;
+  gap: 16px;
+  margin-top: 24px;
+}
+.approach-grid article {
+  padding: 28px;
 }
 .approach-grid h2 {
   font-size: 17px;
-  margin-block: 18px;
-}
-.approach-grid .mono {
-  color: var(--blue);
+  margin-bottom: 14px;
 }
 .approach-grid p {
   font-size: 14px;
@@ -720,7 +680,9 @@ nav a:last-child[aria-current] {
   padding-block: 45px 70px;
 }
 .notice {
-  border-left: 2px solid var(--blue);
+  border: 1px solid var(--line-accent);
+  border-left: 3px solid var(--blue);
+  border-radius: var(--radius-sm);
   padding: 18px 22px;
   background: var(--panel-accent);
 }
@@ -732,16 +694,14 @@ nav a:last-child[aria-current] {
 .experience-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0 60px;
-  margin-top: 35px;
+  gap: 16px;
+  margin-top: 28px;
 }
 .experience-grid article {
-  border-bottom: 1px solid var(--line);
-  padding-block: 30px;
+  padding: 28px;
 }
 .experience-grid h2 {
-  font-size: 20px;
-  margin-top: 15px;
+  font-size: 18px;
 }
 .experience-grid p {
   font-size: 14px;
@@ -784,9 +744,11 @@ nav a:last-child[aria-current] {
   font-size: 9px;
 }
 .contact-layout form {
-  padding: 30px;
+  padding: 32px;
   background: var(--panel);
-  border: 1px solid var(--line);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
 }
 .form-intro {
   font-size: 13px;
@@ -810,7 +772,7 @@ textarea {
   background: var(--bg);
   padding: 11px 13px;
   color: var(--text);
-  border-radius: 0;
+  border-radius: var(--radius-sm);
   font-size: 14px;
 }
 textarea {
@@ -844,9 +806,6 @@ textarea::placeholder {
   .hero h1 {
     font-size: 84px;
   }
-  .blueprint-art {
-    max-height: 400px;
-  }
 }
 @media (max-width: 1050px) {
   .container {
@@ -875,8 +834,11 @@ textarea::placeholder {
   .about-strip {
     gap: 45px;
   }
+  .service-grid {
+    gap: 12px;
+  }
   .service-card {
-    padding: 23px;
+    padding: 22px 19px;
   }
   .contact-layout {
     gap: 35px;
@@ -924,9 +886,6 @@ textarea::placeholder {
   .hero h1 {
     font-size: clamp(36px, 10.5vw, 60px);
   }
-  .hero .eyebrow {
-    font-size: 9px;
-  }
   .hero-specialties {
     font-size: clamp(8px, 2.1vw, 11px);
   }
@@ -941,28 +900,16 @@ textarea::placeholder {
   .hero-actions {
     gap: 25px;
   }
-  .blueprint {
+  .earth {
     max-width: 480px;
     width: 100%;
     margin-inline: auto;
-    margin-top: 12px;
-  }
-  .blueprint-art {
-    max-height: 285px;
   }
   .region-strip .container {
-    display: block;
-    padding-block: 17px;
+    padding-block: 16px;
   }
   .region-strip p {
-    margin-top: 8px;
-    font-size: 10px;
-  }
-  .region-strip p span {
-    padding-inline: 7px;
-  }
-  .region-strip .mono {
-    font-size: 8px;
+    font-size: 12px;
   }
   .section {
     padding-block: 48px;
@@ -991,11 +938,6 @@ textarea::placeholder {
   }
   .service-card p {
     font-size: 12px;
-  }
-  .section-end .mono {
-    max-width: 170px;
-    line-height: 1.8;
-    font-size: 7px;
   }
   .section-end .text-link {
     white-space: nowrap;
@@ -1026,6 +968,13 @@ textarea::placeholder {
     padding: 28px;
     display: block;
     margin-bottom: 48px;
+  }
+  .experience-list {
+    padding-inline: 18px;
+  }
+  .experience-grid article,
+  .approach-grid article {
+    padding: 22px;
   }
   .contact-band h2 {
     font-size: 19px;
@@ -1132,11 +1081,6 @@ textarea::placeholder {
   }
 }
 
-.earth .blueprint-top {
-  align-items: center;
-  min-height: 39px;
-  gap: 12px;
-}
 .earth-stage {
   position: relative;
   width: 100%;
@@ -1160,27 +1104,41 @@ textarea::placeholder {
   visibility: hidden;
 }
 .earth-toggle {
-  padding: 3px 0;
-  border: 0;
-  background: transparent;
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid var(--line-accent);
+  border-radius: 50%;
+  background: var(--panel);
   color: var(--focus);
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.02em;
+  box-shadow: var(--shadow-card);
   cursor: pointer;
-  white-space: nowrap;
+}
+.earth-toggle svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.earth-toggle .icon-play,
+.earth-toggle[aria-pressed='true'] .icon-pause {
+  display: none;
+}
+.earth-toggle[aria-pressed='true'] .icon-play {
+  display: inline;
 }
 .earth-toggle:hover {
   color: var(--text);
+  border-color: var(--blue);
 }
 .earth-toggle[hidden] {
   display: none;
-}
-@media (max-width: 760px) {
-  .earth .blueprint-top {
-    font-size: 7px;
-  }
-  .earth-toggle {
-    font-size: 8px;
-  }
 }

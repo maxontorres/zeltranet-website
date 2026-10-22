@@ -10,7 +10,6 @@ const { detailed = false } = Astro.props;
   {services.map((service, i) => (
     <article class="service-card">
       <div class="card-top">
-        <span class="mono">{String(i + 1).padStart(2, '0')}</span>
         <svg
           width="28"
           height="28"

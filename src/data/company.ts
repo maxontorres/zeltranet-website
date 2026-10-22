@@ -24,7 +24,7 @@ export const services = [
     title: 'Software Modernization',
     text: 'Move existing software forward without losing the knowledge built into it.',
     detail:
-      'Assess an existing system, identify constraints, and improve it in manageable steps that respect business continuity.',
+      'Take over unfinished, slow, or fragile software. Review it, stabilise what is urgent, then improve it in manageable steps that respect business continuity.',
     tag: '04 / MODERNIZATION',
   },
   {
@@ -55,12 +55,32 @@ export const experience = [
   },
   {
     title: 'Business applications',
-    text: 'Founder experience building applications that support day-to-day business processes.',
+    text: 'Founder experience building applications that support day-to-day business processes, including production systems for property sales and online education.',
     label: 'BUSINESS SOFTWARE',
   },
   {
     title: 'Cloud deployments',
     text: 'Founder experience deploying software to cloud environments and supporting its operation.',
     label: 'CLOUD',
+  },
+  {
+    title: 'Banking tools',
+    text: 'Founder experience as a developer for a bank in Bangkok, building cloud-based tools including a face recognition application with AWS Rekognition.',
+    label: 'FINANCE',
+  },
+  {
+    title: 'APIs and legacy systems',
+    text: 'Founder experience building APIs, speeding up older PHP systems, and taking over existing codebases.',
+    label: 'MODERNIZATION',
+  },
+  {
+    title: 'Project leadership',
+    text: 'Founder experience planning and overseeing software projects, and the developers working on them, for a technology company in Vientiane.',
+    label: 'LEADERSHIP',
+  },
+  {
+    title: 'Teaching',
+    text: 'Founder experience teaching web development at universities in China and Laos.',
+    label: 'EDUCATION',
   },
 ];

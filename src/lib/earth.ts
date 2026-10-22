@@ -29,11 +29,13 @@ for (let lat = -75; lat <= 75; lat += 15) {
   for (let lon = -180; lon <= 180; lon += 5) line.push(vector(lon, lat));
   grid.push(line);
 }
-// Geographic reference points for the stated markets, not office locations.
+// Geographic reference points, not office addresses: Vientiane first, Mexico last
+// (both drawn as bases), with Bangkok and Kuala Lumpur between.
 export const markets = [
   [102.63, 17.97],
   [100.5, 13.75],
   [101.69, 3.14],
+  [-99.13, 19.43],
 ].map(([lon, lat]) => vector(lon!, lat!));
 export function project(point: Vector, rotation: number, lift = 1) {
   const cosine = Math.cos(rotation),

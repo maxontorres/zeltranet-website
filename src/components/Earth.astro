@@ -60,7 +60,7 @@ const continents = paths(land, initialRotation);
     <canvas class="earth-canvas" aria-hidden="true"></canvas>
   </div>
   <div class="blueprint-bottom">
-    <span>VIENTIANE, LAOS</span>
+    <span>MEXICO / LAOS</span>
     <span>WORKING ACROSS BORDERS</span>
   </div>
 </div>
@@ -135,11 +135,12 @@ const continents = paths(land, initialRotation);
       for (const [index, point] of markets.entries()) {
         const position = project(point, rotation);
         if (position.z <= 0) continue;
-        ctx.fillStyle = index === 0 ? colors.text : colors.marker;
+        const base = index === 0 || index === markets.length - 1;
+        ctx.fillStyle = base ? colors.text : colors.marker;
         ctx.beginPath();
-        ctx.arc(position.x, position.y, index === 0 ? 2.8 : 2, 0, Math.PI * 2);
+        ctx.arc(position.x, position.y, base ? 2.8 : 2, 0, Math.PI * 2);
         ctx.fill();
-        if (index === 0) {
+        if (base) {
           ctx.strokeStyle = colors.accent;
           ctx.beginPath();
           ctx.arc(position.x, position.y, 6, 0, Math.PI * 2);

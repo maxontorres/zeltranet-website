@@ -39,6 +39,20 @@ const nav = [
     <meta property="og:description" content={description} />
     {canonical && <meta property="og:url" content={canonical} />}
     <meta name="twitter:card" content="summary" />
+    <link
+      rel="preload"
+      href="/fonts/michroma-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/manrope-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     {Astro.site && <link rel="sitemap" href="/sitemap-index.xml" />}
   </head>
@@ -83,7 +97,7 @@ const nav = [
           Connected thinking.
         </p>
         <div class="footer-location">
-          <span class="eyebrow">BASED IN VIENTIANE, LAOS</span>
+          <span class="eyebrow">BASED IN MEXICO AND LAOS</span>
           <p>Built for business. Across borders.</p>
         </div>
       </div>

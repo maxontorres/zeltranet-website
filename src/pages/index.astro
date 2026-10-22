@@ -9,7 +9,7 @@ import { experience } from '../data/company';
 
 <Base
   title="Zeltranet — Software Engineering & Systems Integration"
-  description="Independent software engineering in Vientiane, Laos. Business applications, systems integration, and AI automation for Thailand, Malaysia, Laos, and beyond."
+  description="Independent software engineering company based in Mexico and Laos. Business applications, systems integration, and AI automation for businesses in Mexico, Laos, Thailand, Malaysia, and beyond."
 >
   <section class="hero container">
     <div class="hero-copy">
@@ -17,7 +17,8 @@ import { experience } from '../data/company';
         <span class="status-dot"></span> INDEPENDENT SOFTWARE ENGINEERING
       </p>
       <h1>
-        Zeltranet<span class="hero-period">.</span>
+        <span class="hero-glow">Zeltranet</span>
+        <span class="hero-period">.</span>
       </h1>
       <p class="hero-specialties">
         Software Engineering · Systems Integration · AI Automation
@@ -44,10 +45,12 @@ import { experience } from '../data/company';
   </section>
   <div class="region-strip">
     <div class="container">
-      <span class="mono">BASED IN LAOS. WORKING ACROSS BORDERS.</span>
+      <span class="mono">
+        BASED IN MEXICO AND LAOS. WORKING ACROSS BORDERS.
+      </span>
       <p>
-        Vientiane <span>/</span> Thailand <span>/</span> Malaysia <span>/</span>{' '}
-        International
+        Mexico <span>/</span> Vientiane <span>/</span> Thailand <span>/</span>
+        Malaysia <span>/</span> International
       </p>
     </div>
   </div>
@@ -102,6 +105,16 @@ import { experience } from '../data/company';
             platforms, data collection systems, business applications, and cloud
             deployments.
           </p>
+          <dl class="founder-facts">
+            <div>
+              <dt>Since 2015</dt>
+              <dd>building and maintaining software for businesses</dd>
+            </div>
+            <div>
+              <dt>4 countries</dt>
+              <dd>Mexico, Thailand, China, and Laos</dd>
+            </div>
+          </dl>
           <p class="attribution">
             This background comes from work performed before Zeltranet. It is
             founder experience, not a portfolio of Zeltranet client projects.
@@ -111,7 +124,7 @@ import { experience } from '../data/company';
           </a>
         </div>
         <div class="experience-list">
-          {experience.map((item, index) => (
+          {experience.slice(0, 4).map((item, index) => (
             <a class="experience-row" href="/experience/">
               <span class="mono">0{index + 1}</span>
               <h3>{item.title}</h3>

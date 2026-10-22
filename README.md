@@ -1,25 +1,182 @@
 # Zeltranet website
 
-Static company website for Zeltranet, an independent software engineering company based in Vientiane, Laos. Built with Astro, strict TypeScript, and Tailwind CSS v4. No frontend framework, database, CMS, analytics, remote fonts, or external contact service.
+Static company website for Zeltranet, an independent software engineering company based in Mexico and Laos. Built with Astro, strict TypeScript, and Tailwind CSS v4. No frontend framework, database, CMS, analytics, remote fonts, or external contact service.
 
-## Local setup
-
-Use Node.js 24 LTS and npm (minimum supported Node version: 22.12).
+## Quick start (if you already have Node.js 24)
 
 ```sh
-cd ~/dev/zeltranet-website
 npm ci
 npm run dev
 ```
 
-Open http://localhost:4321. `npm run preview` serves a production build.
+Then open <http://localhost:4321> in your browser. Press `Ctrl + C` in the terminal to stop the server.
+
+If any of that failed, or you're on a new computer, follow the full setup below.
+
+---
+
+## Full setup, step by step
+
+You need two programs: **Git**, to download the code, and **Node.js**, to run it. You do **not** need NVM or any other Node version manager. A regular Node.js install works.
+
+### Which Node.js version?
+
+| Requirement | Version                                                    |
+| ----------- | ---------------------------------------------------------- |
+| Recommended | **Node.js 24 LTS** (same as CI; pinned in `.nvmrc`)        |
+| Minimum     | Node.js 22.23.4 (Astro refuses to start on anything older) |
+
+Check what you have:
 
 ```sh
-npm run format        # Format sources
-npm run validate      # Astro/TypeScript, ESLint, formatting, static build
+node -v
 ```
 
-GitHub Actions runs the same checks plus a domain-configured build. Source repository: [maxontorres/zeltranet-website](https://github.com/maxontorres/zeltranet-website).
+If it prints `v24.something`, skip to [Step 3](#step-3--get-the-code). If it prints something older, says "not recognized", or says "command not found", do Step 2.
+
+### Step 1 — Install Git
+
+- **Windows:** in PowerShell, run `winget install --id Git.Git -e`
+- **macOS:** run `xcode-select --install` or `brew install git`
+- **Linux (Debian/Ubuntu):** run `sudo apt install git`
+
+Check it worked: `git --version`
+
+### Step 2 — Install (or upgrade) Node.js 24 LTS
+
+**Windows (recommended):** open PowerShell and run:
+
+```powershell
+winget install --id OpenJS.NodeJS.LTS -e
+```
+
+This also replaces an older Node.js you installed the same way. Windows will show an admin prompt; click **Yes**.
+
+Alternatively, download the **LTS** `.msi` installer from <https://nodejs.org> and click through it with the default options.
+
+**macOS:** `brew install node@24`, or the LTS installer from <https://nodejs.org>.
+
+**Linux:** use the LTS instructions at <https://nodejs.org/en/download>.
+
+> **Important:** close and reopen your terminal (and VS Code, if it's open) after installing. Terminals that were already open still see the old version.
+
+Check it worked:
+
+```sh
+node -v   # should print v24.x.x
+npm -v    # should print a version number
+```
+
+<details>
+<summary>Prefer a version manager (nvm / nvm-windows / fnm)? Optional.</summary>
+
+The repo includes an `.nvmrc` file containing `24`. From the project folder:
+
+```sh
+nvm install   # macOS/Linux nvm reads .nvmrc
+nvm use
+```
+
+`nvm-windows` doesn't read `.nvmrc`, so use `nvm install 24` and then `nvm use 24`. Uninstall any standalone Node.js first so the two don't conflict.
+
+</details>
+
+### Step 3 — Get the code
+
+```sh
+git clone https://github.com/maxontorres/zeltranet-website.git
+cd zeltranet-website
+```
+
+If you already have the folder, just `cd` into it. Every command below must be run **inside the project folder**, the one that contains `package.json`.
+
+### Step 4 — Install the project's dependencies
+
+```sh
+npm ci
+```
+
+This downloads everything listed in `package-lock.json` into `node_modules/`. It takes about 20–60 seconds. Run it again whenever you pull new changes that touch `package.json` or `package-lock.json`.
+
+You may see `npm warn` lines. Those are normal; see [Troubleshooting](#troubleshooting). Lines that say `npm error` are not normal.
+
+### Step 5 — Run the site
+
+```sh
+npm run dev
+```
+
+When it prints a `Local  http://localhost:4321/` line, open that address in your browser. Saving a file reloads the page automatically. Press `Ctrl + C` in the terminal to stop.
+
+### Step 6 — Before you commit, check your work
+
+```sh
+npm run format     # auto-fixes code style
+npm run validate   # type checks, lint, style check, and a production build
+```
+
+If `validate` finishes without an error, your change passes the same checks GitHub runs.
+
+---
+
+## Command reference
+
+| Command                | What it does                                                      |
+| ---------------------- | ----------------------------------------------------------------- |
+| `npm ci`               | Clean install of dependencies from the lockfile                   |
+| `npm run dev`          | Dev server with live reload at <http://localhost:4321>            |
+| `npm run build`        | Production build into `dist/`                                     |
+| `npm run preview`      | Serve the built `dist/` folder (run `build` first)                |
+| `npm run format`       | Rewrite files with Prettier                                       |
+| `npm run format:check` | Check formatting without changing files                           |
+| `npm run lint`         | ESLint                                                            |
+| `npm run check`        | Astro + TypeScript type checking                                  |
+| `npm run validate`     | `check` + `lint` + `format:check` + `build` (the pre-commit gate) |
+
+`dev` and `preview` listen on all network interfaces (`--host 0.0.0.0`), so other devices on your network, such as your phone, can open `http://<your-computer's-IP>:4321` for mobile testing.
+
+## Troubleshooting
+
+**`Node.js vXX is not supported by Astro! Please upgrade Node.js`**
+Your Node is too old. Do [Step 2](#step-2--install-or-upgrade-nodejs-24-lts), **reopen the terminal**, then run `npm ci` again.
+
+**`node -v` still shows the old version after installing**
+Close every terminal and VS Code window, then reopen. If it's still wrong on Windows, run `where.exe node`. More than one path means several Node installs are fighting; uninstall the extras from _Settings → Apps_.
+
+**`'node' / 'npm' is not recognized` or `command not found`**
+Node isn't installed or isn't on your PATH. Reinstall it (Step 2) and reopen the terminal.
+
+**`npm run dev` says the port is in use**
+Another dev server is probably still running. Close that terminal or press `Ctrl + C` there. Astro will otherwise pick the next free port and print it, so use the URL it shows.
+
+**`npm run validate` fails with `[warn] Code style issues found` on every file (Windows)**
+This is a line-ending problem: Git converted files to Windows (CRLF) endings, but Prettier expects LF. The repo's `.gitattributes` prevents this on fresh clones. To fix an existing checkout, run `npm run format`. Git may then list every file as modified even though the contents are identical; `git add -A` clears that.
+
+**`npm warn EBADENGINE`**
+A package wants a newer Node. Upgrade to Node 24 (Step 2).
+
+**`npm warn install-scripts ... esbuild / workerd ... not yet covered by allowScripts`**
+Harmless for development. `npm run dev` and `npm run build` work without approving them. `workerd` is only used by `npx wrangler dev`.
+
+**PowerShell says `running scripts is disabled on this system`**
+Run this once: `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`, then reopen PowerShell.
+
+**Something is weird and nothing above helped**
+Reinstall dependencies from scratch:
+
+```sh
+# macOS / Linux / Git Bash
+rm -rf node_modules .astro dist
+npm ci
+```
+
+```powershell
+# PowerShell
+Remove-Item -Recurse -Force node_modules, .astro, dist -ErrorAction SilentlyContinue
+npm ci
+```
+
+---
 
 ## Architecture
 
@@ -35,7 +192,7 @@ GitHub Actions runs the same checks plus a domain-configured build. Source repos
 
 All pages are static HTML. Contact loads client JavaScript for downloading a plain-text enquiry draft. The homepage also loads a small standalone canvas Earth animation, adapted from the owner’s MaxonTorres.com globe without React or a rendering dependency. It has a server-rendered SVG fallback, a pause control, reduced-motion support, a 24 fps limit, capped pixel density, and suspends animation when offscreen or the tab is hidden. No information is sent or stored by the website. The form is clearly labelled and the download control stays disabled without JavaScript. CSP allows same-origin assets only and blocks form submission. Update headers deliberately if an approved delivery mechanism is added.
 
-The visual language uses dark navy, graphite, blue accents, technical linework, and system typography. The accent matches the owner’s MaxonTorres.com palette, checked on 2026-10-22.
+The visual language uses dark navy, graphite, blue accents, technical linework, a single soft glow in the homepage hero, and display typography adapted from MaxonTorres.com. The accent matches the owner’s MaxonTorres.com palette, checked on 2026-10-22.
 
 | Role                   | Color     |
 | ---------------------- | --------- |
@@ -46,7 +203,9 @@ The visual language uses dark navy, graphite, blue accents, technical linework, 
 | Secondary text         | `#A3A8B6` |
 | Text on blue buttons   | `#050608` |
 
-Shared CSS tokens in `src/styles/global.css` control page and Earth colors. Animated canvas colors read the same tokens as the static SVG. Blue buttons use dark text to preserve contrast. No remote font requests or decorative image dependencies.
+Shared CSS tokens in `src/styles/global.css` control page and Earth colors. Animated canvas colors read the same tokens as the static SVG. Blue buttons use dark text to preserve contrast. Type uses Michroma (headings), Manrope (body), and Space Mono (labels), self-hosted from `public/fonts` under the SIL Open Font License. No remote font requests or decorative image dependencies.
+
+Project conventions for contributors (and AI agents) are in [`AGENTS.md`](AGENTS.md).
 
 ## SEO and domain configuration
 
@@ -55,12 +214,18 @@ No public domain has been supplied. Builds without `SITE_URL` intentionally omit
 Once a domain is confirmed, set the environment variable **during the build**:
 
 ```sh
+# macOS / Linux / Git Bash
 SITE_URL=https://your-confirmed-domain.com npm run build
+```
+
+```powershell
+# PowerShell
+$env:SITE_URL = "https://your-confirmed-domain.com"; npm run build; Remove-Item Env:SITE_URL
 ```
 
 Use an HTTPS origin without a path. Astro's sitemap integration generates `dist/sitemap-index.xml` and its linked sitemap; `robots.txt` references it. Canonical and Open Graph URLs use the same origin. The custom 404 should remain unindexed. No browser secrets or environment variables are needed.
 
-A local `.env.example` documents the setting. `astro.config.mjs` reads the process environment, so export the value in your shell or build provider; merely copying it to `.env` does not configure this build.
+A local `.env.example` documents the setting. `astro.config.mjs` reads the process environment, so export the value in your shell or build provider. Copying it to `.env` does **not** configure this build.
 
 ## Cloudflare Workers Static Assets
 

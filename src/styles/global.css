@@ -316,7 +316,7 @@ nav a:last-child[aria-current] {
 }
 .hero-specialties {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 11px;
   color: var(--muted);
   letter-spacing: -0.01em;
 }
@@ -394,11 +394,15 @@ nav a:last-child[aria-current] {
 }
 .button-primary:hover {
   background: var(--blue-hover);
-  translate: 0 -1px;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.4),
     0 2px 4px rgb(0 0 0 / 0.4),
     0 16px 34px -12px rgb(98 141 255 / 0.8);
+}
+@media (hover: hover) {
+  .button-primary:hover {
+    translate: 0 -1px;
+  }
 }
 .button-primary:active {
   translate: 0;
@@ -492,10 +496,12 @@ nav a:last-child[aria-current] {
     border-color 0.2s ease,
     box-shadow 0.2s ease;
 }
-.service-card:hover {
-  translate: 0 -2px;
-  border-color: rgb(98 141 255 / 0.45);
-  box-shadow: var(--shadow-card-hover);
+@media (hover: hover) {
+  .service-card:hover {
+    translate: 0 -2px;
+    border-color: rgb(98 141 255 / 0.45);
+    box-shadow: var(--shadow-card-hover);
+  }
 }
 .card-top {
   display: flex;
@@ -539,7 +545,7 @@ nav a:last-child[aria-current] {
   max-width: 400px;
 }
 .experience-intro p.attribution {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--quiet);
   padding-left: 15px;
   border-left: 2px solid var(--line-accent);
@@ -693,7 +699,7 @@ nav a:last-child[aria-current] {
   color: var(--quiet);
 }
 .footer-location p {
-  font-size: 11px;
+  font-size: 13px;
   margin-top: 6px;
 }
 .footer-bottom {
@@ -704,7 +710,7 @@ nav a:last-child[aria-current] {
   padding-block: 20px;
   color: var(--quiet);
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: 11px;
 }
 .footer-bottom a {
   display: inline-flex;
@@ -822,7 +828,7 @@ nav a:last-child[aria-current] {
   font-size: 14px;
 }
 .contact-layout .notice .eyebrow {
-  font-size: 9px;
+  font-size: 11px;
 }
 .contact-layout form {
   padding: 32px;
@@ -869,7 +875,7 @@ textarea::placeholder {
   gap: 18px;
 }
 .form-note {
-  font-size: 11px;
+  font-size: 12px;
   margin-bottom: 22px;
 }
 #form-status {
@@ -909,9 +915,6 @@ textarea::placeholder {
   .hero-description {
     font-size: 23px;
   }
-  .hero-specialties {
-    font-size: 9px;
-  }
   nav {
     gap: 22px;
   }
@@ -946,21 +949,22 @@ textarea::placeholder {
     padding-top: 22px;
   }
   .brand {
-    font-size: 17px;
+    min-height: 44px;
+    font-size: 16px;
   }
   nav {
     width: 100%;
     justify-content: space-between;
-    gap: 12px;
+    gap: 10px;
     overflow-x: auto;
   }
   nav a {
-    font-size: 11px;
-    padding: 21px 0 16px;
+    font-size: 13px;
+    padding: 16px 0 14px;
     white-space: nowrap;
   }
   nav a:last-child {
-    padding: 5px 11px;
+    padding: 12px 14px;
   }
   .hero {
     padding-top: 48px;
@@ -972,19 +976,24 @@ textarea::placeholder {
     font-size: clamp(36px, 10.5vw, 60px);
   }
   .hero-specialties {
-    font-size: clamp(8px, 2.1vw, 11px);
+    font-size: 11px;
+    line-height: 1.7;
   }
   .hero-description {
     margin-top: 28px;
     font-size: 23px;
   }
   .hero-intro {
-    font-size: 14px;
+    font-size: 15px;
     max-width: 490px;
   }
   .hero-actions {
-    gap: 25px;
+    gap: 8px 25px;
   }
+  .text-link {
+    min-height: 44px;
+  }
+
   .earth[data-scroll] .earth-stage {
     --dx: 0px;
     --dy: 0px;
@@ -1000,7 +1009,8 @@ textarea::placeholder {
     padding-block: 16px;
   }
   .region-strip p {
-    font-size: 12px;
+    font-size: 14px;
+    line-height: 1.6;
   }
   .section {
     padding-block: 48px;
@@ -1013,10 +1023,12 @@ textarea::placeholder {
     font-size: 24px;
   }
   .section-heading > p {
-    margin-top: 18px;
+    margin-top: 14px;
+    font-size: 14px;
+    max-width: none;
   }
   .service-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
   }
   .service-card {
     padding: 22px 19px;
@@ -1025,10 +1037,11 @@ textarea::placeholder {
     margin-bottom: 24px;
   }
   .service-card h3 {
-    font-size: 14px;
+    font-size: 15px;
   }
   .service-card p {
-    font-size: 12px;
+    font-size: 14px;
+    max-width: none;
   }
   .section-end .text-link {
     white-space: nowrap;
@@ -1040,9 +1053,16 @@ textarea::placeholder {
   }
   .experience-intro > p {
     max-width: 100%;
+    font-size: 14px;
+  }
+  .experience-intro p.attribution {
+    font-size: 13px;
+  }
+  .founder-facts dd {
+    font-size: 13px;
   }
   .experience-row {
-    padding-block: 22px;
+    padding-block: 14px;
   }
   .about-strip {
     grid-template-columns: 1fr;
@@ -1054,6 +1074,7 @@ textarea::placeholder {
   }
   .about-strip p {
     max-width: none;
+    font-size: 14px;
   }
   .contact-band {
     padding: 28px;
@@ -1082,15 +1103,19 @@ textarea::placeholder {
     width: 100%;
   }
   .footer-location {
-    margin-left: auto;
+    margin-left: 0;
+  }
+  .footer-location p {
+    font-size: 14px;
   }
   .footer-bottom {
-    flex-wrap: wrap;
+    align-items: center;
     gap: 12px;
-    font-size: 8px;
+    font-size: 11px;
+    padding-block: 8px;
   }
-  .footer-bottom > span:nth-child(2) {
-    display: none;
+  .footer-bottom a {
+    min-height: 44px;
   }
   .page-intro {
     padding-top: 45px;
@@ -1100,7 +1125,7 @@ textarea::placeholder {
     font-size: clamp(24px, 6.4vw, 36px);
   }
   .page-intro > p {
-    font-size: 14px;
+    font-size: 15px;
   }
   .approach-grid {
     grid-template-columns: 1fr;
@@ -1132,26 +1157,50 @@ textarea::placeholder {
   .notice {
     padding: 16px;
   }
+  .notice p,
+  .contact-layout aside > p,
+  .contact-location p,
+  .approach-grid p,
+  .experience-grid p,
+  .about-content p {
+    font-size: 14px;
+  }
+  label {
+    font-size: 14px;
+  }
+  input,
+  textarea {
+    font-size: 16px;
+  }
+  .form-note {
+    font-size: 13px;
+  }
+  .contact-band .button,
+  .contact-layout form .button {
+    width: 100%;
+  }
   .not-found {
     padding-bottom: 55px;
   }
 }
-@media (max-width: 380px) {
+@media (min-width: 561px) and (max-width: 760px) {
   .service-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
   }
+}
+@media (max-width: 420px) {
+  /* The wordmark already links home; keep the menu on one line. */
+  nav a[href='/'] {
+    display: none;
+  }
+}
+@media (max-width: 380px) {
   .hero-actions {
     align-items: start;
     flex-direction: column;
   }
   .hero h1 {
     font-size: 34px;
-  }
-  .hero-specialties {
-    font-size: 8px;
-  }
-  .footer-location {
-    margin-left: 0;
   }
   .contact-band {
     padding: 22px;
@@ -1277,4 +1326,20 @@ main > :not(.hero) {
 }
 .earth-toggle[hidden] {
   display: none;
+}
+/* Touch screens of any width (phones and tablets): comfortable tap targets,
+   and 16px inputs so iOS does not zoom in on focus. */
+@media (pointer: coarse) {
+  .brand,
+  .text-link {
+    min-height: 44px;
+  }
+  .earth .earth-toggle {
+    width: 44px;
+    height: 44px;
+  }
+  input,
+  textarea {
+    font-size: 16px;
+  }
 }

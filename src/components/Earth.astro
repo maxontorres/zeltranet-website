@@ -9,9 +9,13 @@ import {
 } from '../lib/earth';
 const lines = paths(grid, initialRotation);
 const continents = paths(land, initialRotation);
+interface Props {
+  scroll?: boolean;
+}
+const { scroll = false } = Astro.props;
 ---
 
-<div class="earth" data-earth>
+<div class="earth" data-earth data-scroll={scroll ? '' : undefined}>
   <div class="earth-stage">
     <svg
       class="earth-fallback"
@@ -52,19 +56,19 @@ const continents = paths(land, initialRotation);
       })}
     </svg>
     <canvas class="earth-canvas" aria-hidden="true"></canvas>
-    <button
-      type="button"
-      class="earth-toggle"
-      aria-label="Pause globe rotation"
-      aria-pressed="false"
-      hidden
-    >
-      <svg viewBox="0 0 16 16" aria-hidden="true">
-        <path class="icon-pause" d="M5 3.5v9M11 3.5v9" />
-        <path class="icon-play" d="M5.5 3.5v9l7-4.5z" />
-      </svg>
-    </button>
   </div>
+  <button
+    type="button"
+    class="earth-toggle"
+    aria-label="Pause globe rotation"
+    aria-pressed="false"
+    hidden
+  >
+    <svg viewBox="0 0 16 16" aria-hidden="true">
+      <path class="icon-pause" d="M5 3.5v9M11 3.5v9" />
+      <path class="icon-play" d="M5.5 3.5v9l7-4.5z" />
+    </svg>
+  </button>
 </div>
 <script>
   import {
@@ -95,6 +99,12 @@ const continents = paths(land, initialRotation);
       text: readColor('--text'),
     };
     const motion = matchMedia('(prefers-reduced-motion: reduce)');
+    // The homepage scales the globe up as you scroll; render it sharper then.
+    const scrollEffect =
+      root.dataset.scroll !== undefined &&
+      CSS.supports('animation-timeline: scroll()');
+    const faded = () =>
+      scrollEffect && Number(getComputedStyle(stage).opacity) < 0.02;
     let rotation = initialRotation,
       frame: number | null = null,
       lastTime = 0;
@@ -161,7 +171,7 @@ const continents = paths(land, initialRotation);
       if (delta >= 1000 / 24) {
         rotation += (Math.min(delta, 100) / 180000) * Math.PI * 2;
         lastTime = time;
-        draw();
+        if (!faded()) draw();
       }
       frame = requestAnimationFrame(tick);
     }
@@ -181,7 +191,9 @@ const continents = paths(land, initialRotation);
       if (!canvas || !ctx || !stage) return;
       const width = stage.clientWidth,
         height = stage.clientHeight;
-      const ratio = Math.min(devicePixelRatio || 1, 1.5);
+      const ratio =
+        Math.min(devicePixelRatio || 1, 1.5) *
+        (scrollEffect && !motion.matches ? 2 : 1);
       canvas.width = Math.round(width * ratio);
       canvas.height = Math.round(height * ratio);
       ctx.setTransform(canvas.width / 540, 0, 0, canvas.height / 400, 0, 0);
@@ -192,7 +204,7 @@ const continents = paths(land, initialRotation);
       visible = entry?.isIntersecting ?? false;
       sync();
     });
-    visibility.observe(root);
+    visibility.observe(stage);
     button.addEventListener('click', () => {
       paused = !paused;
       sync();

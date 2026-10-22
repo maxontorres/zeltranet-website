@@ -343,31 +343,86 @@ nav a:last-child[aria-current] {
   margin-top: 31px;
 }
 .button {
-  border-radius: var(--radius-sm);
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
-  gap: 32px;
+  gap: 18px;
   padding: 14px 20px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
   font-size: 12px;
   font-weight: 600;
-  border: 1px solid transparent;
   cursor: pointer;
-  transition: background 0.15s;
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease,
+    translate 0.2s ease;
 }
 .button-primary {
+  padding: 8px 8px 8px 22px;
+  border-color: rgb(255 255 255 / 0.18);
   background: var(--blue);
   color: var(--on-blue);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.35),
+    0 1px 2px rgb(0 0 0 / 0.4),
+    0 10px 26px -10px rgb(98 141 255 / 0.65);
+}
+.button-icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  background: var(--on-blue);
+  color: var(--blue);
+  font-size: 15px;
+  line-height: 1;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+.button-icon > * {
+  transition:
+    rotate 0.25s ease,
+    translate 0.25s ease;
 }
 .button-primary:hover {
   background: var(--blue-hover);
+  translate: 0 -1px;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.4),
+    0 2px 4px rgb(0 0 0 / 0.4),
+    0 16px 34px -12px rgb(98 141 255 / 0.8);
+}
+.button-primary:active {
+  translate: 0;
+}
+.button-primary:hover .button-icon {
+  background: var(--bg);
+  color: var(--text);
+}
+.button-primary:hover .button-icon svg {
+  rotate: 45deg;
+}
+.button-primary:hover .button-icon:not(.button-icon-down) {
+  translate: 2px 0;
+}
+.button-primary:hover .button-icon-down {
+  translate: 0 2px;
+}
+.button-primary:disabled {
+  translate: 0;
+  box-shadow: none;
 }
 .button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-}
-.button span {
-  font-size: 17px;
 }
 .text-link {
   display: inline-flex;
@@ -385,7 +440,7 @@ nav a:last-child[aria-current] {
 }
 .region-strip {
   border-block: 1px solid var(--line);
-  background: var(--surface);
+  background: rgb(14 21 32 / 0.8);
 }
 .region-strip .container {
   padding-block: 18px;
@@ -528,9 +583,35 @@ nav a:last-child[aria-current] {
 .experience-row {
   display: flex;
   align-items: center;
-  gap: 26px;
-  padding: 22px 0;
+  gap: 18px;
+  padding: 16px 0;
   border-bottom: 1px solid var(--line);
+}
+.icon-tile {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--line-accent);
+  border-radius: 10px;
+  background: var(--panel-accent);
+  color: var(--blue);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.05);
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+.icon-tile svg {
+  width: 20px;
+  height: 20px;
+}
+.experience-row:hover .icon-tile {
+  border-color: var(--blue);
+  color: var(--text);
+}
+.experience-grid .icon-tile {
+  margin-bottom: 20px;
 }
 .experience-row:last-child {
   border-bottom: 0;
@@ -808,6 +889,10 @@ textarea::placeholder {
   }
 }
 @media (max-width: 1050px) {
+  .earth[data-scroll] .earth-stage {
+    --page: calc(100vw - 64px);
+    --dx: calc((var(--page) - (var(--page) - 24px) * 0.9 / 2.1) / -2);
+  }
   .container {
     width: calc(100% - 64px);
   }
@@ -899,6 +984,12 @@ textarea::placeholder {
   }
   .hero-actions {
     gap: 25px;
+  }
+  .earth[data-scroll] .earth-stage {
+    --dx: 0px;
+    --dy: 0px;
+    --grow: 1.7;
+    --grow-end: 2;
   }
   .earth {
     max-width: 480px;
@@ -1081,6 +1172,51 @@ textarea::placeholder {
   }
 }
 
+/* Sections after the hero sit above the globe as it grows behind them. */
+main > :not(.hero) {
+  position: relative;
+  z-index: 1;
+}
+@supports (animation-timeline: scroll()) {
+  .earth[data-scroll] {
+    z-index: -1;
+  }
+  .earth[data-scroll] .earth-stage {
+    /* Distance from the globe's column to the centre of the container. */
+    --page: min(1240px, 100vw - 96px);
+    --dx: calc((var(--page) - (var(--page) - 24px) / 2.2) / -2);
+    --dy: clamp(-160px, 50vh - 400px, 200px);
+    --grow: 2.4;
+    --grow-end: 2.9;
+    transform-origin: center;
+    will-change: translate, scale, opacity;
+    animation-name: earth-drift;
+    animation-duration: auto;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: scroll(root);
+    animation-range: 0 150vh;
+  }
+  /* Travel down exactly as far as the page scrolls, so the globe holds still
+     in the viewport while it grows and fades behind the content. */
+  @keyframes earth-drift {
+    0% {
+      translate: 0 0;
+      scale: 1;
+      opacity: 1;
+    }
+    40% {
+      translate: var(--dx) calc(60vh + var(--dy));
+      scale: var(--grow);
+      opacity: 0.18;
+    }
+    100% {
+      translate: var(--dx) calc(150vh + var(--dy));
+      scale: var(--grow-end);
+      opacity: 0;
+    }
+  }
+}
 .earth-stage {
   position: relative;
   width: 100%;

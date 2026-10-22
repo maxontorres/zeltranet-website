@@ -3,7 +3,7 @@
 - Use Astro with strict TypeScript. Keep the site statically generated.
 - Use Tailwind CSS and shared tokens in `src/styles/global.css`; shared components belong in `src/components`.
 - Do not introduce React, other client frameworks, databases, CMSs, or unnecessary packages.
-- Ship no client JavaScript unless a feature needs it. The contact draft download and homepage Earth animation are the current exceptions. The Earth must keep a static fallback, a pause control, reduced-motion support, and suspend rendering offscreen or in hidden tabs.
+- Ship no client JavaScript unless a feature needs it. The contact draft download and homepage Earth animation are the current exceptions. The Earth must keep a static fallback, a pause control, reduced-motion support, and suspend rendering offscreen or in hidden tabs. On the homepage it also grows into a faded background as you scroll, using CSS scroll-driven animation (no scroll listeners); write the animation as longhand properties, because the minifier folds a shorthand with `animation-timeline` into a form Chromium rejects.
 - Preserve semantic HTML, visible focus, keyboard navigation, responsive layouts, and reduced-motion support.
 - Use navy, graphite, and Millennium Blue. The homepage hero glow (text glow and soft orb behind the Earth) is the only approved glow; avoid other gradients, glow effects, dashboard layouts, and stock startup illustrations.
 - Typography: Michroma for headings and the wordmark, Manrope for body text, Space Mono for labels. Fonts are self-hosted in `public/fonts`; no remote font requests.

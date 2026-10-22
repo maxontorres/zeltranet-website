@@ -2,6 +2,7 @@
 import Arrow from '../components/Arrow.astro';
 import Base from '../layouts/Base.astro';
 import Earth from '../components/Earth.astro';
+import Icon from '../components/Icon.astro';
 import ServiceGrid from '../components/ServiceGrid.astro';
 import ContactBand from '../components/ContactBand.astro';
 import { experience } from '../data/company';
@@ -31,14 +32,17 @@ import { experience } from '../data/company';
       </p>
       <div class="hero-actions">
         <a href="/contact/" class="button button-primary">
-          Discuss your project <Arrow />
+          Discuss your project{' '}
+          <span class="button-icon">
+            <Arrow />
+          </span>
         </a>
         <a href="/services/" class="text-link">
           Explore our services <span aria-hidden="true">→</span>
         </a>
       </div>
     </div>
-    <Earth />
+    <Earth scroll />
   </section>
   <div class="region-strip">
     <div class="container">
@@ -115,6 +119,7 @@ import { experience } from '../data/company';
         <div class="experience-list">
           {experience.slice(0, 4).map((item) => (
             <a class="experience-row" href="/experience/">
+              <Icon path={item.icon} />
               <h3>{item.title}</h3>
               <span class="row-arrow">
                 <Arrow />

@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import ContactBand from '../components/ContactBand.astro';
+import Icon from '../components/Icon.astro';
 import { experience } from '../data/company';
 ---
 
@@ -32,6 +33,7 @@ import { experience } from '../data/company';
     <div class="experience-grid">
       {experience.map((item) => (
         <article>
+          <Icon path={item.icon} />
           <h2>{item.title}</h2>
           <p>{item.text}</p>
         </article>

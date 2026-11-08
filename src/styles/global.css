@@ -799,6 +799,21 @@ nav a:last-child[aria-current] {
   font-size: 13px;
   margin-top: 6px;
 }
+.footer-whatsapp {
+  color: var(--muted);
+}
+.footer-whatsapp:hover {
+  color: var(--text);
+}
+.whatsapp-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 6px;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  color: var(--blue);
+}
 .footer-bottom {
   border-top: 1px solid var(--line);
   display: flex;

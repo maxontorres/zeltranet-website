@@ -3,6 +3,11 @@ import type { LogoName } from './logos';
 
 type Copy<T> = Record<Locale, T>;
 
+export const whatsapp = {
+  display: '+856 20 52 373 435',
+  href: 'https://wa.me/8562052373435',
+};
+
 export const services: {
   logos: LogoName[];
   copy: Copy<{ title: string; text: string; detail: string }>;

@@ -2,6 +2,7 @@
 import Arrow from '../components/Arrow.astro';
 import '../styles/global.css';
 import Mark from '../components/Mark.astro';
+import { whatsapp } from '../data/company';
 import {
   languages,
   locales,
@@ -144,6 +145,11 @@ const nav = (
         <div class="footer-location">
           <p>{t.footerTagline}</p>
           <p>{t.footerBase}</p>
+          <p>
+            <a class="footer-whatsapp" href={whatsapp.href}>
+              WhatsApp {whatsapp.display}
+            </a>
+          </p>
         </div>
       </div>
       <div class="container footer-bottom">

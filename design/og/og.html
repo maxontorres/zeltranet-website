@@ -1,0 +1,152 @@
+<!doctype html>
+<!--
+  Source for the social share images (public/og-en.png, public/og-es.png).
+  Regenerate with: node design/og/render.mjs
+-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      @font-face {
+        font-family: 'Michroma';
+        src: url('../../public/fonts/michroma-latin.woff2') format('woff2');
+      }
+      @font-face {
+        font-family: 'Manrope';
+        src: url('../../public/fonts/manrope-latin.woff2') format('woff2');
+        font-weight: 200 800;
+      }
+      @font-face {
+        font-family: 'Space Mono';
+        src: url('../../public/fonts/space-mono-400-latin.woff2')
+          format('woff2');
+      }
+      * {
+        margin: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+        background: #0b1019;
+      }
+      .card {
+        position: relative;
+        width: 1200px;
+        height: 630px;
+        padding: 72px 80px;
+        display: flex;
+        flex-direction: column;
+        color: #e8e9ec;
+        font-family: 'Manrope', sans-serif;
+        border-bottom: 8px solid #628dff;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 22px;
+        font-family: 'Michroma', sans-serif;
+        font-size: 34px;
+        letter-spacing: 0.08em;
+      }
+      .brand svg {
+        width: 64px;
+        height: auto;
+      }
+      .dot {
+        color: #628dff;
+      }
+      h1 {
+        margin-top: auto;
+        max-width: 620px;
+        font-family: 'Michroma', sans-serif;
+        font-weight: 400;
+        font-size: 46px;
+        line-height: 1.32;
+      }
+      h1 .dot {
+        color: #628dff;
+      }
+      .meta {
+        margin-top: 34px;
+        display: flex;
+        gap: 40px;
+        font-family: 'Space Mono', monospace;
+        font-size: 22px;
+        letter-spacing: 0.06em;
+        color: #a3a8b6;
+      }
+      .meta b {
+        font-weight: 400;
+        color: #628dff;
+      }
+      .globe {
+        position: absolute;
+        right: -150px;
+        top: 50px;
+        width: 560px;
+        height: 560px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <svg class="globe" viewBox="-100 -100 200 200" fill="none">
+        <g stroke-width="0.6">
+          <circle r="96" stroke="#426194" stroke-width="1" />
+          <g stroke="#253149">
+            <ellipse rx="96" ry="34" />
+            <ellipse rx="96" ry="66" cy="0" />
+            <path d="M-92 -28h184M-92 28h184M-70 -66h140M-70 66h140" />
+          </g>
+          <g stroke="#334e7c">
+            <ellipse rx="24" ry="96" />
+            <ellipse rx="58" ry="96" />
+            <ellipse rx="84" ry="96" />
+            <path d="M0 -96V96" />
+          </g>
+        </g>
+        <!-- Mexico and Laos -->
+        <circle cx="-52" cy="-18" r="4.5" fill="#628dff" />
+        <circle cx="26" cy="-12" r="4.5" fill="#628dff" />
+        <circle cx="-52" cy="-18" r="9" stroke="#628dff" stroke-width="0.8" />
+        <circle cx="26" cy="-12" r="9" stroke="#628dff" stroke-width="0.8" />
+      </svg>
+      <div class="brand">
+        <svg viewBox="0 0 798 563" fill="none">
+          <path
+            d="M107 0h618l-55 73-504 420h519l-35 70H0l54-70 504-420H69Z"
+            fill="#e8e9ec"
+          />
+          <rect x="725" y="493" width="73" height="70" fill="#628dff" />
+        </svg>
+        <span>ZELTRANET<span class="dot">.</span></span>
+      </div>
+      <h1 id="headline"></h1>
+      <div class="meta">
+        <span id="tagline"></span>
+        <b>zeltranet.com</b>
+      </div>
+    </div>
+    <script>
+      const copy = {
+        en: {
+          headline:
+            'Software engineering &amp; systems integration<span class="dot">.</span>',
+          tagline: 'MEXICO + LAOS',
+        },
+        es: {
+          headline:
+            'Ingeniería de software e integración de sistemas<span class="dot">.</span>',
+          tagline: 'MÉXICO + LAOS',
+        },
+      };
+      const lang = new URLSearchParams(location.search).get('lang') || 'en';
+      document.documentElement.lang = lang;
+      document.getElementById('headline').innerHTML = copy[lang].headline;
+      document.getElementById('tagline').textContent = copy[lang].tagline;
+    </script>
+  </body>
+</html>

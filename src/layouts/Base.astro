@@ -31,6 +31,54 @@ const alternates =
         href: new URL(routes[page][locale], Astro.site).href,
       }))
     : [];
+const ogImage = new URL(`/og-${lang}.png`, Astro.site ?? Astro.url).href;
+const ogImageAlt = {
+  en: 'Zeltranet: software engineering and systems integration, Mexico and Laos.',
+  es: 'Zeltranet: ingeniería de software e integración de sistemas, México y Laos.',
+}[lang];
+// Structured data for search engines, on the homepages only.
+const structuredData =
+  Astro.site && page === 'home'
+    ? {
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'Organization',
+            '@id': new URL('/#organization', Astro.site).href,
+            name: 'Zeltranet',
+            url: Astro.site.href,
+            logo: new URL('/apple-touch-icon.png', Astro.site).href,
+            description,
+            email: email.display,
+            telephone: whatsapp.display,
+            founder: { '@type': 'Person', name: 'Maximiliano Brito Torres' },
+            address: [
+              { '@type': 'PostalAddress', addressCountry: 'MX' },
+              {
+                '@type': 'PostalAddress',
+                addressLocality: 'Vientiane',
+                addressCountry: 'LA',
+              },
+            ],
+            contactPoint: {
+              '@type': 'ContactPoint',
+              contactType: 'sales',
+              email: email.display,
+              telephone: whatsapp.display,
+              availableLanguage: ['English', 'Spanish'],
+            },
+          },
+          {
+            '@type': 'WebSite',
+            '@id': new URL('/#website', Astro.site).href,
+            name: 'Zeltranet',
+            url: Astro.site.href,
+            inLanguage: ['en', 'es'],
+            publisher: { '@id': new URL('/#organization', Astro.site).href },
+          },
+        ],
+      }
+    : undefined;
 const nav = (
   ['home', 'services', 'work', 'experience', 'about', 'contact'] as const
 ).map((key) => ({ key, label: t.nav[key], href: routes[key][lang] }));
@@ -70,7 +118,23 @@ const nav = (
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     {canonical && <meta property="og:url" content={canonical} />}
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
+    {structuredData && (
+      <script
+        is:inline
+        type="application/ld+json"
+        set:html={JSON.stringify(structuredData)}
+      />
+    )}
     <link
       rel="preload"
       href="/fonts/michroma-latin.woff2"

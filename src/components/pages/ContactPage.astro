@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import type { Locale } from '../../i18n';
-import { whatsapp } from '../../data/company';
+import { email, whatsapp } from '../../data/company';
 interface Props {
   lang: Locale;
 }
@@ -23,12 +23,13 @@ const copy = {
     regions: ['Mexico, Laos, Thailand, Malaysia,', 'and internationally'],
     languagesLabel: 'LANGUAGES',
     languages: 'English and Spanish',
-    noticeLabel: 'WHATSAPP',
+    noticeLabel: 'DIRECT CONTACT',
     notice:
-      'Message us directly on WhatsApp. The form on this page only prepares a local enquiry file; it does not send or store your information.',
+      'Email us or message us on WhatsApp. The form on this page only prepares a local enquiry file; it does not send or store your information.',
+    emailLabel: 'Email Zeltranet',
     whatsappLabel: 'Message Zeltranet on WhatsApp',
     formTitle: 'Prepare a project enquiry',
-    formIntro: 'Download your draft, then send it to us on WhatsApp.',
+    formIntro: 'Download your draft, then send it to us by email or WhatsApp.',
     name: 'Your name',
     company: 'Company',
     email: 'Work email',
@@ -38,7 +39,7 @@ const copy = {
     note: 'All fields are required. Everything stays in your browser. No message is sent.',
     download: 'Download enquiry draft',
     noscript:
-      'Enable JavaScript to download a draft, or message us directly on WhatsApp.',
+      'Enable JavaScript to download a draft, or contact us directly by email or WhatsApp.',
     status: 'Your draft download has started. No message has been sent.',
     draftTitle: 'ZELTRANET - PROJECT ENQUIRY DRAFT',
     draftNotSent: 'This draft has not been sent.',
@@ -64,12 +65,13 @@ const copy = {
     regions: ['México, Laos, Tailandia, Malasia', 'y a nivel internacional'],
     languagesLabel: 'IDIOMAS',
     languages: 'Inglés y español',
-    noticeLabel: 'WHATSAPP',
+    noticeLabel: 'CONTACTO DIRECTO',
     notice:
-      'Escríbanos directamente por WhatsApp. El formulario de esta página solo prepara un archivo de solicitud local; no envía ni almacena su información.',
+      'Escríbanos por correo o por WhatsApp. El formulario de esta página solo prepara un archivo de solicitud local; no envía ni almacena su información.',
+    emailLabel: 'Escribir un correo a Zeltranet',
     whatsappLabel: 'Escribir a Zeltranet por WhatsApp',
     formTitle: 'Prepare una solicitud de proyecto',
-    formIntro: 'Descargue su borrador y envíenoslo por WhatsApp.',
+    formIntro: 'Descargue su borrador y envíenoslo por correo o por WhatsApp.',
     name: 'Su nombre',
     company: 'Empresa',
     email: 'Correo de trabajo',
@@ -78,7 +80,7 @@ const copy = {
     note: 'Todos los campos son obligatorios. Todo permanece en su navegador. No se envía ningún mensaje.',
     download: 'Descargar borrador',
     noscript:
-      'Active JavaScript para descargar un borrador, o escríbanos directamente por WhatsApp.',
+      'Active JavaScript para descargar un borrador, o escríbanos directamente por correo o por WhatsApp.',
     status:
       'La descarga de su borrador ha comenzado. No se ha enviado ningún mensaje.',
     draftTitle: 'ZELTRANET - BORRADOR DE SOLICITUD DE PROYECTO',
@@ -137,7 +139,14 @@ const draft = {
         <span class="eyebrow">{copy.noticeLabel}</span>
         <p>{copy.notice}</p>
         <a
-          class="whatsapp-link"
+          class="contact-link"
+          href={email.href}
+          aria-label={`${copy.emailLabel}: ${email.display}`}
+        >
+          {email.display}
+        </a>
+        <a
+          class="contact-link"
           href={whatsapp.href}
           aria-label={`${copy.whatsappLabel}: ${whatsapp.display}`}
         >

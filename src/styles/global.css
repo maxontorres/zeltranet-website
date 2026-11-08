@@ -799,14 +799,15 @@ nav a:last-child[aria-current] {
   font-size: 13px;
   margin-top: 6px;
 }
-.footer-whatsapp {
+.footer-contact {
   color: var(--muted);
 }
-.footer-whatsapp:hover {
+.footer-contact:hover {
   color: var(--text);
 }
-.whatsapp-link {
-  display: inline-flex;
+.contact-link {
+  display: flex;
+  width: fit-content;
   align-items: center;
   min-height: 44px;
   margin-top: 6px;

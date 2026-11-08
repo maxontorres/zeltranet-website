@@ -3,6 +3,11 @@ import type { LogoName } from './logos';
 
 type Copy<T> = Record<Locale, T>;
 
+export const email = {
+  display: 'hello@zeltranet.com',
+  href: 'mailto:hello@zeltranet.com',
+};
+
 export const whatsapp = {
   display: '+856 20 52 373 435',
   href: 'https://wa.me/8562052373435',

@@ -34,7 +34,7 @@ node -v
 
 If it prints `v24.something`, skip to [Step 3](#step-3--get-the-code). If it prints something older, says "not recognized", or says "command not found", do Step 2.
 
-### Step 1 — Install Git
+### Step 1 - Install Git
 
 - **Windows:** in PowerShell, run `winget install --id Git.Git -e`
 - **macOS:** run `xcode-select --install` or `brew install git`
@@ -42,7 +42,7 @@ If it prints `v24.something`, skip to [Step 3](#step-3--get-the-code). If it pri
 
 Check it worked: `git --version`
 
-### Step 2 — Install (or upgrade) Node.js 24 LTS
+### Step 2 - Install (or upgrade) Node.js 24 LTS
 
 **Windows (recommended):** open PowerShell and run:
 
@@ -81,7 +81,7 @@ nvm use
 
 </details>
 
-### Step 3 — Get the code
+### Step 3 - Get the code
 
 ```sh
 git clone https://github.com/maxontorres/zeltranet-website.git
@@ -90,17 +90,17 @@ cd zeltranet-website
 
 If you already have the folder, just `cd` into it. Every command below must be run **inside the project folder**, the one that contains `package.json`.
 
-### Step 4 — Install the project's dependencies
+### Step 4 - Install the project's dependencies
 
 ```sh
 npm ci
 ```
 
-This downloads everything listed in `package-lock.json` into `node_modules/`. It takes about 20–60 seconds. Run it again whenever you pull new changes that touch `package.json` or `package-lock.json`.
+This downloads everything listed in `package-lock.json` into `node_modules/`. It takes about 20-60 seconds. Run it again whenever you pull new changes that touch `package.json` or `package-lock.json`.
 
 You may see `npm warn` lines. Those are normal; see [Troubleshooting](#troubleshooting). Lines that say `npm error` are not normal.
 
-### Step 5 — Run the site
+### Step 5 - Run the site
 
 ```sh
 npm run dev
@@ -108,7 +108,7 @@ npm run dev
 
 When it prints a `Local  http://localhost:4321/` line, open that address in your browser. Saving a file reloads the page automatically. Press `Ctrl + C` in the terminal to stop.
 
-### Step 6 — Before you commit, check your work
+### Step 6 - Before you commit, check your work
 
 ```sh
 npm run format     # auto-fixes code style

@@ -1,7 +1,7 @@
 {
   "name": "zeltranet-website",
   "version": "0.1.0",
-  "description": "Zeltranet company website — static Astro and Tailwind CSS",
+  "description": "Zeltranet company website - static Astro and Tailwind CSS",
   "scripts": {
     "dev": "astro dev --host 0.0.0.0",
     "check": "astro check",

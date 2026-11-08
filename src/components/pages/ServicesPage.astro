@@ -1,0 +1,95 @@
+---
+import Base from '../../layouts/Base.astro';
+import ServiceGrid from '../ServiceGrid.astro';
+import ContactBand from '../ContactBand.astro';
+import type { Locale } from '../../i18n';
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const copy = {
+  en: {
+    title: 'Services — Zeltranet',
+    description:
+      'Business applications, workflow automation, systems integration, modernization, AI integration, and cloud engineering from Zeltranet.',
+    heading: ['Software that fits', 'your business'],
+    intro:
+      'From a focused internal tool to a connected set of systems, we build around the work your business needs to do.',
+    gridLabel: 'Engineering services',
+    approachLabel: 'HOW WE WORK',
+    approach: [
+      [
+        'Start with the work.',
+        'Clarify the problem, current systems, users, and operating constraints before choosing a solution.',
+      ],
+      [
+        'Keep the scope clear.',
+        'Agree on a practical scope and build in reviewable steps, with testing and documentation throughout.',
+      ],
+      [
+        'Plan beyond launch.',
+        'Prepare for deployment, maintenance, and handover so the system stays useful after delivery.',
+      ],
+    ],
+  },
+  es: {
+    title: 'Servicios — Zeltranet',
+    description:
+      'Aplicaciones empresariales, automatización de procesos, integración de sistemas, modernización, integración de IA e ingeniería en la nube de Zeltranet.',
+    heading: ['Software que se adapta', 'a su empresa'],
+    intro:
+      'Desde una herramienta interna enfocada hasta un conjunto de sistemas conectados, construimos en torno al trabajo que su empresa necesita realizar.',
+    gridLabel: 'Servicios de ingeniería',
+    approachLabel: 'CÓMO TRABAJAMOS',
+    approach: [
+      [
+        'Empezar por el trabajo.',
+        'Aclarar el problema, los sistemas actuales, los usuarios y las restricciones operativas antes de elegir una solución.',
+      ],
+      [
+        'Mantener un alcance claro.',
+        'Acordar un alcance práctico y construir en etapas revisables, con pruebas y documentación en todo momento.',
+      ],
+      [
+        'Planear más allá del lanzamiento.',
+        'Preparar el despliegue, el mantenimiento y la transferencia para que el sistema siga siendo útil después de la entrega.',
+      ],
+    ],
+  },
+}[lang];
+---
+
+<Base
+  title={copy.title}
+  description={copy.description}
+  lang={lang}
+  page="services"
+>
+  <section class="page-intro container">
+    <h1>
+      {copy.heading[0]}
+      <br />
+      {copy.heading[1]}
+      <span class="blue-text">.</span>
+    </h1>
+    <p>{copy.intro}</p>
+  </section>
+  <section
+    class="container section services-detail"
+    aria-label={copy.gridLabel}
+  >
+    <ServiceGrid lang={lang} detailed />
+  </section>
+  <section class="container approach-section">
+    <span class="eyebrow">{copy.approachLabel}</span>
+    <div class="approach-grid">
+      {copy.approach.map(([heading, text]) => (
+        <article>
+          <h2>{heading}</h2>
+          <p>{text}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+  <ContactBand lang={lang} />
+</Base>

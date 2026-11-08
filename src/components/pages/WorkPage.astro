@@ -1,0 +1,155 @@
+---
+import { Picture } from 'astro:assets';
+import Arrow from '../Arrow.astro';
+import Base from '../../layouts/Base.astro';
+import ContactBand from '../ContactBand.astro';
+import { automator } from '../../data/work';
+import { screen } from '../../data/work-screens';
+import type { Locale } from '../../i18n';
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const copy = {
+  en: {
+    description:
+      'AI Automator for Quotes and Purchasing by Zeltranet: from customer enquiry to supplier quotes, pricing, quotation, and purchase order in one workflow.',
+    eyebrow: 'FLAGSHIP PRODUCT',
+    hint: 'Best viewed on a larger screen. Available in English and Spanish.',
+    problemTitle: 'The work it removes',
+    problem:
+      'Quoting for a trading company usually means retyping customer requests, emailing several suppliers, chasing replies, converting currencies, and checking margins before a single quote can go out. Each step is manual, and each handoff is a chance for delay or error.',
+    workflowTitle: 'Workflow',
+    galleryTitle: 'Inside the product',
+    step: 'Step',
+    note: 'Screens show an example workspace. Company names and figures are illustrative.',
+    peopleTitle: 'People stay in control',
+    people:
+      'Anything that leaves the company needs a person’s approval: supplier requests, pricing exceptions, and customer quotations. AI handles the reading, extracting, and comparing; your team makes the decisions.',
+    adaptTitle: 'Set up around your business',
+    adapt:
+      'Built for companies that buy from suppliers and resell to business customers. It is configured around your products, suppliers, documents, and existing tools, such as WhatsApp, email, spreadsheets, or an ERP.',
+  },
+  es: {
+    description:
+      'AI Automator for Quotes and Purchasing de Zeltranet: desde la solicitud del cliente hasta las cotizaciones de proveedores, los precios, la cotización y la orden de compra en un solo flujo.',
+    eyebrow: 'PRODUCTO PRINCIPAL',
+    hint: 'Se ve mejor en una pantalla grande. Disponible en inglés y español.',
+    problemTitle: 'El trabajo que elimina',
+    problem:
+      'Cotizar en una empresa comercial suele implicar volver a capturar las solicitudes de los clientes, escribir a varios proveedores, dar seguimiento a sus respuestas, convertir monedas y revisar márgenes antes de poder enviar una sola cotización. Cada paso es manual y cada traspaso es una oportunidad de retraso o error.',
+    workflowTitle: 'Flujo de trabajo',
+    galleryTitle: 'Dentro del producto',
+    step: 'Paso',
+    note: 'Las pantallas muestran un espacio de trabajo de ejemplo. Los nombres de empresas y las cifras son ilustrativos.',
+    peopleTitle: 'Las personas mantienen el control',
+    people:
+      'Todo lo que sale de la empresa requiere la aprobación de una persona: solicitudes a proveedores, excepciones de precio y cotizaciones a clientes. La IA se encarga de leer, extraer y comparar; su equipo toma las decisiones.',
+    adaptTitle: 'Configurado para su empresa',
+    adapt:
+      'Pensado para empresas que compran a proveedores y revenden a clientes empresariales. Se configura en torno a sus productos, proveedores, documentos y herramientas actuales, como WhatsApp, correo electrónico, hojas de cálculo o un ERP.',
+  },
+}[lang];
+const t = automator.copy[lang];
+const steps = automator.screens.map((key, index) => ({
+  key,
+  number: String(index + 1).padStart(2, '0'),
+  image: screen(lang, key),
+  ...t.steps[key],
+}));
+---
+
+<Base
+  title={`${automator.name} — Zeltranet`}
+  description={copy.description}
+  lang={lang}
+  page="work"
+>
+  <section class="page-intro container">
+    <span class="eyebrow">{copy.eyebrow}</span>
+    <h1>
+      {automator.name}
+      <span class="blue-text">.</span>
+    </h1>
+    <p>{t.summary}</p>
+    <a class="button button-primary" href={automator.app}>
+      {t.open}{' '}
+      <span class="button-icon">
+        <Arrow />
+      </span>
+    </a>
+    <p class="work-hint">{copy.hint}</p>
+  </section>
+  <section class="container work-text">
+    <h2>
+      {copy.problemTitle}
+      <span class="blue-text">.</span>
+    </h2>
+    <p>{copy.problem}</p>
+  </section>
+  <section class="container work-flow" aria-labelledby="workflow-heading">
+    <h2 id="workflow-heading">
+      {copy.workflowTitle}
+      <span class="blue-text">.</span>
+    </h2>
+    <ol class="workflow">
+      {steps.map((step) => (
+        <li>
+          <a href={`#step-${step.key}`}>
+            <span class="workflow-number" aria-hidden="true">
+              {step.number}
+            </span>
+            <span>
+              <strong>{step.title}</strong>
+              <span>{step.summary}</span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </section>
+  <section class="container work-gallery" aria-labelledby="gallery-heading">
+    <h2 id="gallery-heading">
+      {copy.galleryTitle}
+      <span class="blue-text">.</span>
+    </h2>
+    {steps.map((step) => (
+      <figure class="gallery-step" id={`step-${step.key}`}>
+        <Picture
+          src={step.image}
+          alt={step.alt}
+          formats={['avif', 'webp']}
+          widths={[720, 1080, 1440]}
+          sizes="(max-width: 1050px) calc(100vw - 32px), 760px"
+          loading="lazy"
+          decoding="async"
+        />
+        <figcaption>
+          <span class="eyebrow">
+            {copy.step} {step.number}
+          </span>
+          <h3>{step.title}</h3>
+          <p>{step.detail}</p>
+        </figcaption>
+      </figure>
+    ))}
+    <p class="work-hint">{copy.note}</p>
+  </section>
+  <section class="container work-columns">
+    <div>
+      <h2>
+        {copy.peopleTitle}
+        <span class="blue-text">.</span>
+      </h2>
+      <p>{copy.people}</p>
+    </div>
+    <div>
+      <h2>
+        {copy.adaptTitle}
+        <span class="blue-text">.</span>
+      </h2>
+      <p>{copy.adapt}</p>
+    </div>
+  </section>
+  <ContactBand lang={lang} />
+</Base>

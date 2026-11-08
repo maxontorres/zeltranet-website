@@ -180,10 +180,14 @@ npm ci
 
 ## Architecture
 
-- `src/pages/`: Home, Services, Experience, About, Contact, a custom 404, and generated `robots.txt`.
+- `src/pages/`: Home, Services, Work, Experience, About, Contact (English, with Spanish versions under `/es/`), a custom 404, and generated `robots.txt`.
+- `public/ai-automator/`: the interactive AI Automator for Quotes and Purchasing app (static HTML, CSS, and JS; example workspace data; not indexed). Its source lives in the separate `zeltranet-demos` folder.
+- `src/assets/work/<en|es>/`: screenshots of each app screen for the Work page gallery.
+- `src/assets/brand/`: logo as SVG plus a compressed copy of the original glowing artwork. The header mark (`src/components/Mark.astro`), `public/favicon.svg`, and `public/apple-touch-icon.png` use the same shape.
 - `src/layouts/Base.astro`: document metadata, accessible navigation, footer.
 - `src/components/`: reusable brand mark, decorative engineering drawing, services grid, and contact invitation.
 - `src/data/company.ts`: service and founder-experience copy.
+- `src/data/work.ts`: AI Automator name, link, and workflow and gallery copy.
 - `src/data/earth-coastlines.json`: simplified geographic linework from the owner-supplied MaxonTorres.com globe (retrieved 2026-10-22).
 - `src/lib/earth.ts`: shared projection geometry for the static SVG and animated canvas.
 - `src/styles/global.css`: Tailwind import, design tokens, responsive styling, reduced-motion handling.
@@ -236,7 +240,7 @@ Deployment has **not** been performed. These are instructions for a later approv
 3. Build with the confirmed `SITE_URL` as shown above.
 4. Optionally inspect locally with `npx wrangler dev` (serves `dist` with Cloudflare asset handling).
 5. After deployment approval and Cloudflare authentication, run `npx wrangler deploy` from this directory. Wrangler uses `./dist` and the Worker name `zeltranet-website`.
-6. Configure the approved custom domain in Cloudflare. Check all five routes, an unknown route, headers, mobile layout, enquiry download, robots, and sitemap on the live origin.
+6. Configure the approved custom domain in Cloudflare. Check every route in both languages, the AI Automator app, an unknown route, headers, mobile layout, enquiry download, robots, and sitemap on the live origin.
 
 For Cloudflare Git builds, use `npm run build`, supply `SITE_URL` as a build variable, and use `npx wrangler deploy` as the deployment command. There is no automatic deployment workflow here. Keep API tokens out of the repository.
 
@@ -244,6 +248,7 @@ For Cloudflare Git builds, use `npm run build`, supply `SITE_URL` as a build var
 
 - Contact delivery awaits a confirmed business address or an approved service. The draft download works locally but cannot contact Zeltranet.
 - Experience is explicitly the founder's prior professional experience, not a Zeltranet client portfolio. No client names, metrics, endorsements, or unprovided history are asserted.
-- English only for this iteration. Translations and locale-specific metadata can follow when approved copy is available.
+- English and Spanish. Spanish pages use Spanish slugs (see `src/i18n/index.ts`).
+- The AI Automator is presented as a Zeltranet product. Its workspace and screenshots use example companies and figures, noted on the Work page; they are not client projects or results.
 - Source is hosted in `maxontorres/zeltranet-website`. The website has not been deployed; deployment requires separate approval.
 - Before launch, confirm domain/contact details, review factual copy, and check the deployed Cloudflare headers and 404 behavior.

@@ -207,9 +207,9 @@ p {
   font-weight: 400;
   letter-spacing: 0.06em;
 }
-.brand svg {
-  width: 28px;
-  height: 28px;
+.brand .mark {
+  width: 30px;
+  height: auto;
   color: var(--blue);
 }
 .brand-dot {
@@ -219,6 +219,7 @@ nav {
   display: flex;
   gap: 33px;
   align-items: center;
+  margin-left: auto;
 }
 nav a {
   font-size: 12px;
@@ -241,6 +242,53 @@ nav a:last-child:hover,
 nav a:last-child[aria-current] {
   border-color: var(--blue);
   background: var(--panel-accent);
+}
+/* Language toggle: a two-option pill; the current language is filled. */
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+.lang-switch svg {
+  width: 14px;
+  height: 14px;
+  margin: 0 5px 0 7px;
+  stroke: var(--quiet);
+  stroke-width: 1.1;
+}
+.lang-switch a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  color: var(--quiet);
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.lang-switch a:hover {
+  color: var(--text);
+  background: var(--panel-hover);
+}
+.lang-switch a[aria-current] {
+  color: var(--text);
+  background: var(--panel-accent);
+  box-shadow: inset 0 0 0 1px var(--line-accent);
+}
+.lang-switch a:focus-visible {
+  outline-offset: 2px;
 }
 .hero {
   position: relative;
@@ -509,6 +557,30 @@ nav a:last-child[aria-current] {
   margin-bottom: 26px;
   color: var(--blue);
 }
+.card-logos {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+  padding: 0;
+  list-style: none;
+  color: var(--muted);
+}
+.card-logos svg {
+  display: block;
+  width: 17px;
+  height: 17px;
+  opacity: 0.75;
+  transition:
+    opacity 0.2s ease,
+    color 0.2s ease;
+}
+@media (hover: hover) {
+  .service-card:hover .card-logos svg {
+    opacity: 1;
+    color: var(--text);
+  }
+}
 .service-card h3 {
   font-size: 15px;
   line-height: 1.35;
@@ -634,9 +706,34 @@ nav a:last-child[aria-current] {
 }
 .about-strip {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+  align-items: center;
   gap: 22px 90px;
   padding-block: 68px;
+}
+.about-strip h2 {
+  margin-bottom: 20px;
+}
+.about-strip p.founded {
+  margin-top: 18px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--quiet);
+}
+.founder-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  background: var(--panel);
+}
+.founder .founder-photo {
+  max-width: 340px;
+  margin-top: 30px;
 }
 .about-strip > .eyebrow {
   grid-column: 1/-1;
@@ -685,8 +782,8 @@ nav a:last-child[aria-current] {
 .footer-main .brand {
   font-size: 16px;
 }
-.footer-main .brand svg {
-  width: 24px;
+.footer-main .brand .mark {
+  width: 26px;
 }
 .footer-main > p {
   font-size: 12px;
@@ -762,6 +859,142 @@ nav a:last-child[aria-current] {
 }
 .approach-grid p {
   font-size: 14px;
+}
+.work-hint {
+  color: var(--quiet);
+  font-size: 13px;
+}
+.page-intro .work-hint {
+  margin-top: 16px;
+}
+.work-shot {
+  display: block;
+  margin: 0;
+}
+.work-shot img,
+.gallery-step img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+}
+.work-text,
+.work-columns {
+  padding-block: 35px;
+}
+.work-text h2,
+.work-columns h2,
+.work-flow h2,
+.work-gallery h2 {
+  font-size: clamp(20px, 2.2vw, 26px);
+}
+.work-text p,
+.work-columns p {
+  max-width: 760px;
+  margin-top: 18px;
+  line-height: 1.9;
+}
+.work-flow {
+  padding-block: 10px 35px;
+}
+.workflow {
+  display: grid;
+  gap: 10px;
+  max-width: 820px;
+  margin-top: 24px;
+  padding: 0;
+  list-style: none;
+}
+.workflow a {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  padding: 16px 20px;
+  background: var(--panel);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  transition: border-color 0.2s ease;
+}
+.workflow a:hover {
+  border-color: var(--line-accent);
+}
+.workflow-number {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--line-accent);
+  border-radius: 50%;
+  color: var(--blue);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+.workflow strong {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+}
+.workflow strong + span {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.work-gallery {
+  padding-block: 35px;
+}
+.gallery-step {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
+  gap: 44px;
+  align-items: center;
+  margin: 40px 0 0;
+  scroll-margin-top: 110px;
+}
+.gallery-step:nth-of-type(even) {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.65fr);
+}
+.gallery-step:nth-of-type(even) picture {
+  order: 2;
+}
+.gallery-step h3 {
+  font-size: 18px;
+  margin-block: 12px 14px;
+}
+.gallery-step p {
+  line-height: 1.9;
+}
+.work-gallery > .work-hint {
+  margin-top: 36px;
+}
+.work-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  padding-bottom: 70px;
+}
+.work-teaser {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: 48px;
+  align-items: center;
+  border-top: 1px solid var(--line);
+}
+.work-teaser h2 {
+  font-size: clamp(22px, 2.4vw, 30px);
+  line-height: 1.35;
+  margin-top: 16px;
+}
+.work-teaser-copy > p:not(.work-hint) {
+  margin-block: 20px 10px;
+  line-height: 1.9;
+}
+.work-teaser .hero-actions {
+  margin-top: 26px;
 }
 .experience-detail {
   padding-block: 45px 70px;
@@ -895,6 +1128,18 @@ textarea::placeholder {
   }
 }
 @media (max-width: 1050px) {
+  .work-teaser {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .gallery-step,
+  .gallery-step:nth-of-type(even) {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .gallery-step:nth-of-type(even) picture {
+    order: 0;
+  }
   .earth[data-scroll] .earth-stage {
     --page: calc(100vw - 64px);
     --dx: calc((var(--page) - (var(--page) - 24px) * 0.9 / 2.1) / -2);
@@ -943,9 +1188,8 @@ textarea::placeholder {
     width: calc(100% - 40px);
   }
   .header-inner {
-    flex-direction: column;
+    flex-wrap: wrap;
     gap: 0;
-    align-items: start;
     padding-top: 22px;
   }
   .brand {
@@ -953,6 +1197,7 @@ textarea::placeholder {
     font-size: 16px;
   }
   nav {
+    order: 1;
     width: 100%;
     justify-content: space-between;
     gap: 10px;
@@ -1066,8 +1311,12 @@ textarea::placeholder {
   }
   .about-strip {
     grid-template-columns: 1fr;
-    gap: 22px;
+    gap: 30px;
     padding-block: 45px;
+  }
+  .founder-photo,
+  .founder .founder-photo {
+    max-width: 420px;
   }
   .about-strip h2 {
     font-size: 21px;
@@ -1131,6 +1380,11 @@ textarea::placeholder {
     grid-template-columns: 1fr;
     gap: 20px;
   }
+  .work-columns {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding-bottom: 45px;
+  }
   .approach-section {
     padding-bottom: 45px;
   }
@@ -1190,7 +1444,20 @@ textarea::placeholder {
 }
 @media (max-width: 420px) {
   /* The wordmark already links home; keep the menu on one line. */
-  nav a[href='/'] {
+  nav .nav-home {
+    display: none;
+  }
+  /* Spanish labels run longer; tighten so all links fit without scrolling. */
+  nav {
+    gap: 4px;
+  }
+  nav a {
+    font-size: 12.5px;
+  }
+  nav a:last-child {
+    padding-inline: 11px;
+  }
+  .lang-switch svg {
     display: none;
   }
 }
@@ -1337,6 +1604,10 @@ main > :not(.hero) {
   .earth .earth-toggle {
     width: 44px;
     height: 44px;
+  }
+  .lang-switch a {
+    min-width: 46px;
+    height: 38px;
   }
   input,
   textarea {

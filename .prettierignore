@@ -3,3 +3,5 @@ dist
 .astro
 .wrangler
 package-lock.json
+# AI Automator app, generated from zeltranet-demos; kept byte-for-byte.
+public/ai-automator

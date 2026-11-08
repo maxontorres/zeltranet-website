@@ -7,12 +7,15 @@ import {
   project,
   initialRotation,
 } from '../lib/earth';
+import { ui, type Locale } from '../i18n';
 const lines = paths(grid, initialRotation);
 const continents = paths(land, initialRotation);
 interface Props {
+  lang: Locale;
   scroll?: boolean;
 }
-const { scroll = false } = Astro.props;
+const { lang, scroll = false } = Astro.props;
+const t = ui[lang];
 ---
 
 <div class="earth" data-earth data-scroll={scroll ? '' : undefined}>
@@ -60,8 +63,10 @@ const { scroll = false } = Astro.props;
   <button
     type="button"
     class="earth-toggle"
-    aria-label="Pause globe rotation"
+    aria-label={t.pauseGlobe}
     aria-pressed="false"
+    data-label-pause={t.pauseGlobe}
+    data-label-resume={t.resumeGlobe}
     hidden
   >
     <svg viewBox="0 0 16 16" aria-hidden="true">
@@ -181,9 +186,10 @@ const { scroll = false } = Astro.props;
       root.dataset.animated = String(!motion.matches);
       button.hidden = motion.matches;
       button.setAttribute('aria-pressed', String(paused));
-      button.ariaLabel = paused
-        ? 'Resume globe rotation'
-        : 'Pause globe rotation';
+      const label = paused
+        ? button.dataset.labelResume
+        : button.dataset.labelPause;
+      if (label) button.ariaLabel = label;
       if (!motion.matches && !paused && visible && !document.hidden)
         frame = requestAnimationFrame(tick);
     }

@@ -1,0 +1,138 @@
+---
+import Base from '../../layouts/Base.astro';
+import ContactBand from '../ContactBand.astro';
+import FounderPhoto from '../FounderPhoto.astro';
+import type { Locale } from '../../i18n';
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const copy = {
+  en: {
+    title: 'About — Zeltranet',
+    description:
+      'Zeltranet is an independent software engineering company based in Mexico and Laos, working with businesses in Mexico, Laos, Thailand, Malaysia, and internationally.',
+    heading: ['Independent engineering.', 'Connected thinking'],
+    intro:
+      'Zeltranet is an independent software engineering company based in Mexico and Laos, serving business customers in Mexico, Laos, Thailand, Malaysia, and internationally. We work in English and Spanish, across time zones from the Americas to Southeast Asia.',
+    needs: ['Built around', 'business needs.'],
+    needsText: [
+      'Software should make everyday operations clearer and more reliable. We focus on the systems behind the work: the applications people use, the information they depend on, and the processes that connect them.',
+      'Our work brings together software engineering, systems integration, and practical AI automation. The aim is straightforward: help businesses operate more efficiently with software they can understand and maintain.',
+    ],
+    founderLabel: 'THE FOUNDER',
+    founderText: [
+      'Zeltranet was founded by Maximiliano Brito Torres (Maxon), a software engineer who has built and maintained software for businesses since 2015, in Mexico, Thailand, China, and Laos.',
+      'Maxon has worked as a developer for software companies and a bank in Bangkok, taught web development at universities in China and Laos, and managed software projects for a technology company in Vientiane. That work was done for those organizations, not as Zeltranet engagements; it shapes how Zeltranet approaches engineering.',
+    ],
+    principlesLabel: 'ENGINEERING PRINCIPLES',
+    principles: [
+      [
+        'Clarity before complexity.',
+        'Understand the problem and choose technology that serves it. A simpler system is often easier to operate and improve.',
+      ],
+      [
+        'Reliability by design.',
+        'Account for failures, maintenance, and the people who will use the software every day.',
+      ],
+      [
+        'Practical collaboration.',
+        'Keep scope, tradeoffs, and progress visible, explained in plain language. Good engineering depends on shared understanding.',
+      ],
+    ],
+  },
+  es: {
+    title: 'Nosotros — Zeltranet',
+    description:
+      'Zeltranet es una empresa independiente de ingeniería de software con sede en México y Laos, que trabaja con empresas en México, Laos, Tailandia, Malasia y a nivel internacional.',
+    heading: ['Ingeniería independiente.', 'Pensamiento conectado'],
+    intro:
+      'Zeltranet es una empresa independiente de ingeniería de software con sede en México y Laos, que atiende a clientes empresariales en México, Laos, Tailandia, Malasia y a nivel internacional. Trabajamos en inglés y español, en zonas horarias que van de América al Sudeste Asiático.',
+    needs: ['Pensado para', 'las necesidades del negocio.'],
+    needsText: [
+      'El software debe hacer que las operaciones diarias sean más claras y confiables. Nos enfocamos en los sistemas detrás del trabajo: las aplicaciones que usan las personas, la información de la que dependen y los procesos que las conectan.',
+      'Nuestro trabajo reúne ingeniería de software, integración de sistemas y automatización práctica con IA. El objetivo es sencillo: ayudar a las empresas a operar con mayor eficiencia, con software que puedan entender y mantener.',
+    ],
+    founderLabel: 'EL FUNDADOR',
+    founderText: [
+      'Zeltranet fue fundada por Maximiliano Brito Torres (Maxon), ingeniero de software que desde 2015 ha creado y mantenido software para empresas en México, Tailandia, China y Laos.',
+      'Maxon ha trabajado como desarrollador para empresas de software y para un banco en Bangkok, ha enseñado desarrollo web en universidades de China y Laos, y ha dirigido proyectos de software para una empresa de tecnología en Vientián. Ese trabajo se realizó para esas organizaciones, no como proyectos de Zeltranet; aun así, da forma a la manera en que Zeltranet aborda la ingeniería.',
+    ],
+    principlesLabel: 'PRINCIPIOS DE INGENIERÍA',
+    principles: [
+      [
+        'Claridad antes que complejidad.',
+        'Entender el problema y elegir la tecnología que lo resuelva. Un sistema más simple suele ser más fácil de operar y mejorar.',
+      ],
+      [
+        'Confiabilidad desde el diseño.',
+        'Considerar las fallas, el mantenimiento y a las personas que usarán el software todos los días.',
+      ],
+      [
+        'Colaboración práctica.',
+        'Mantener visibles el alcance, las decisiones y el avance, explicados en lenguaje claro. La buena ingeniería depende de un entendimiento compartido.',
+      ],
+    ],
+  },
+}[lang];
+---
+
+<Base
+  title={copy.title}
+  description={copy.description}
+  lang={lang}
+  page="about"
+>
+  <section class="page-intro container">
+    <h1>
+      {copy.heading[0]}
+      <br />
+      {copy.heading[1]}
+      <span class="blue-text">.</span>
+    </h1>
+    <p>{copy.intro}</p>
+  </section>
+  <section class="container about-content">
+    <h2>
+      {copy.needs[0]}
+      <br />
+      {copy.needs[1]}
+    </h2>
+    <div>
+      {copy.needsText.map((text) => (
+        <p>{text}</p>
+      ))}
+    </div>
+  </section>
+  <section class="container about-content founder">
+    <div>
+      <span class="eyebrow">{copy.founderLabel}</span>
+      <h2>
+        Maximiliano
+        <br />
+        Brito Torres.
+      </h2>
+      <FounderPhoto lang={lang} />
+    </div>
+    <div>
+      {copy.founderText.map((text) => (
+        <p>{text}</p>
+      ))}
+      <a class="text-link" href="https://maxontorres.com" rel="noopener">
+        maxontorres.com <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </section>
+  <section class="container approach-section">
+    <span class="eyebrow">{copy.principlesLabel}</span>
+    <div class="approach-grid">
+      {copy.principles.map(([heading, text]) => (
+        <article>
+          <h2>{heading}</h2>
+          <p>{text}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+  <ContactBand lang={lang} />
+</Base>

@@ -1,0 +1,33 @@
+---
+import { Picture } from 'astro:assets';
+import photo from '../assets/founder-maximiliano-brito-torres.jpg';
+import type { Locale } from '../i18n';
+
+interface Props {
+  lang: Locale;
+  class?: string;
+  sizes?: string;
+}
+
+const {
+  lang,
+  class: className,
+  sizes = '(max-width: 700px) 100vw, 360px',
+} = Astro.props;
+
+const alt = {
+  en: 'Maximiliano Brito Torres, founder of Zeltranet, standing beside a laptop showing the Zeltranet website at a technology expo.',
+  es: 'Maximiliano Brito Torres, fundador de Zeltranet, junto a una laptop que muestra el sitio web de Zeltranet en una exposición de tecnología.',
+}[lang];
+---
+
+<Picture
+  src={photo}
+  alt={alt}
+  formats={['avif', 'webp']}
+  widths={[400, 640, 900]}
+  sizes={sizes}
+  loading="lazy"
+  decoding="async"
+  class:list={['founder-photo', className]}
+/>

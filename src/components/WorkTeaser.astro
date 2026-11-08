@@ -1,0 +1,54 @@
+---
+import { Picture } from 'astro:assets';
+import Arrow from './Arrow.astro';
+import { automator } from '../data/work';
+import { screen } from '../data/work-screens';
+import { routes, type Locale } from '../i18n';
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const copy = {
+  en: { eyebrow: 'FLAGSHIP PRODUCT', more: 'How it works' },
+  es: { eyebrow: 'PRODUCTO PRINCIPAL', more: 'Cómo funciona' },
+}[lang];
+const t = automator.copy[lang];
+---
+
+<section class="container section work-teaser" aria-labelledby="work-heading">
+  <div class="work-teaser-copy">
+    <span class="eyebrow">{copy.eyebrow}</span>
+    <h2 id="work-heading">
+      {automator.name}
+      <span class="blue-text">.</span>
+    </h2>
+    <p>{t.summary}</p>
+    <div class="hero-actions">
+      <a class="button button-primary" href={automator.app}>
+        {t.open}{' '}
+        <span class="button-icon">
+          <Arrow />
+        </span>
+      </a>
+      <a class="text-link" href={routes.work[lang]}>
+        {copy.more} <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+  <a
+    class="work-shot"
+    href={routes.work[lang]}
+    tabindex="-1"
+    aria-hidden="true"
+  >
+    <Picture
+      src={screen(lang, 'replies')}
+      alt=""
+      formats={['avif', 'webp']}
+      widths={[560, 840, 1120]}
+      sizes="(max-width: 1050px) calc(100vw - 32px), 560px"
+      loading="lazy"
+      decoding="async"
+    />
+  </a>
+</section>

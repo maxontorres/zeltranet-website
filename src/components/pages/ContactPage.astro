@@ -1,0 +1,231 @@
+---
+import Base from '../../layouts/Base.astro';
+import type { Locale } from '../../i18n';
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const copy = {
+  en: {
+    title: 'Contact — Zeltranet',
+    description:
+      'Prepare a project enquiry for Zeltranet. Describe your business needs, existing systems, and the software you want to build.',
+    heading: ['What needs', 'to work better'],
+    intro:
+      'A new application. A manual process. Systems that don’t talk to each other. Start with the problem your business needs to solve.',
+    startTitle: 'A useful starting point.',
+    startText:
+      'Tell us what your business does, what is getting in the way, and what a useful outcome would look like.',
+    locationLabel: 'LOCATION',
+    location: 'Mexico and Vientiane, Laos',
+    regionsLabel: 'WORKING WITH BUSINESSES IN',
+    regions: ['Mexico, Laos, Thailand, Malaysia,', 'and internationally'],
+    languagesLabel: 'LANGUAGES',
+    languages: 'English and Spanish',
+    noticeLabel: 'CONTACT CHANNEL COMING SOON',
+    notice:
+      'Direct contact details are not published yet. This form prepares a local enquiry file; it does not send or store your information.',
+    formTitle: 'Prepare a project enquiry',
+    formIntro:
+      'Download your draft to keep and share once a contact channel is available.',
+    name: 'Your name',
+    company: 'Company',
+    email: 'Work email',
+    project: 'What would you like to build or improve?',
+    placeholder:
+      'Your current process, the challenge, and what you want to achieve…',
+    note: 'All fields are required. Everything stays in your browser. No message is sent.',
+    download: 'Download enquiry draft',
+    noscript:
+      'Enable JavaScript to download a draft, or write your project notes in a text file. Direct contact details will be published here when available.',
+    status: 'Your draft download has started. No message has been sent.',
+    draftTitle: 'ZELTRANET — PROJECT ENQUIRY DRAFT',
+    draftNotSent: 'This draft has not been sent.',
+    draftName: 'Name',
+    draftCompany: 'Company',
+    draftEmail: 'Email',
+    draftProject: 'Project',
+    file: 'zeltranet-project-enquiry.txt',
+  },
+  es: {
+    title: 'Contacto — Zeltranet',
+    description:
+      'Prepare una solicitud de proyecto para Zeltranet. Describa las necesidades de su empresa, sus sistemas actuales y el software que quiere construir.',
+    heading: ['¿Qué necesita', 'funcionar mejor'],
+    intro:
+      'Una nueva aplicación. Un proceso manual. Sistemas que no se comunican entre sí. Empiece por el problema que su empresa necesita resolver.',
+    startTitle: 'Un buen punto de partida.',
+    startText:
+      'Cuéntenos a qué se dedica su empresa, qué obstáculos enfrenta y cómo se vería un resultado útil.',
+    locationLabel: 'UBICACIÓN',
+    location: 'México y Vientián, Laos',
+    regionsLabel: 'TRABAJAMOS CON EMPRESAS EN',
+    regions: ['México, Laos, Tailandia, Malasia', 'y a nivel internacional'],
+    languagesLabel: 'IDIOMAS',
+    languages: 'Inglés y español',
+    noticeLabel: 'CANAL DE CONTACTO PRÓXIMAMENTE',
+    notice:
+      'Aún no publicamos datos de contacto directo. Este formulario prepara un archivo de solicitud local; no envía ni almacena su información.',
+    formTitle: 'Prepare una solicitud de proyecto',
+    formIntro:
+      'Descargue su borrador para conservarlo y compartirlo cuando haya un canal de contacto disponible.',
+    name: 'Su nombre',
+    company: 'Empresa',
+    email: 'Correo de trabajo',
+    project: '¿Qué le gustaría construir o mejorar?',
+    placeholder: 'Su proceso actual, el reto y lo que quiere lograr…',
+    note: 'Todos los campos son obligatorios. Todo permanece en su navegador. No se envía ningún mensaje.',
+    download: 'Descargar borrador',
+    noscript:
+      'Active JavaScript para descargar un borrador, o escriba las notas de su proyecto en un archivo de texto. Los datos de contacto directo se publicarán aquí cuando estén disponibles.',
+    status:
+      'La descarga de su borrador ha comenzado. No se ha enviado ningún mensaje.',
+    draftTitle: 'ZELTRANET — BORRADOR DE SOLICITUD DE PROYECTO',
+    draftNotSent: 'Este borrador no ha sido enviado.',
+    draftName: 'Nombre',
+    draftCompany: 'Empresa',
+    draftEmail: 'Correo',
+    draftProject: 'Proyecto',
+    file: 'zeltranet-solicitud-de-proyecto.txt',
+  },
+}[lang];
+const draft = {
+  title: copy.draftTitle,
+  notSent: copy.draftNotSent,
+  name: copy.draftName,
+  company: copy.draftCompany,
+  email: copy.draftEmail,
+  project: copy.draftProject,
+  file: copy.file,
+  status: copy.status,
+};
+---
+
+<Base
+  title={copy.title}
+  description={copy.description}
+  lang={lang}
+  page="contact"
+>
+  <section class="page-intro container">
+    <h1>
+      {copy.heading[0]}
+      <br />
+      {copy.heading[1]}
+      <span class="blue-text">?</span>
+    </h1>
+    <p>{copy.intro}</p>
+  </section>
+  <section class="container contact-layout">
+    <aside>
+      <h2>{copy.startTitle}</h2>
+      <p>{copy.startText}</p>
+      <div class="contact-location">
+        <span class="eyebrow">{copy.locationLabel}</span>
+        <p>{copy.location}</p>
+        <span class="eyebrow">{copy.regionsLabel}</span>
+        <p>
+          {copy.regions[0]}
+          <br />
+          {copy.regions[1]}
+        </p>
+        <span class="eyebrow">{copy.languagesLabel}</span>
+        <p>{copy.languages}</p>
+      </div>
+      <div class="notice">
+        <span class="eyebrow">{copy.noticeLabel}</span>
+        <p>{copy.notice}</p>
+      </div>
+    </aside>
+    <form id="enquiry-form" data-draft={JSON.stringify(draft)}>
+      <h2>{copy.formTitle}</h2>
+      <p class="form-intro">{copy.formIntro}</p>
+      <div class="form-pair">
+        <label>
+          {copy.name} <span aria-hidden="true">*</span>
+          <input name="name" autocomplete="name" required maxlength="120" />
+        </label>
+        <label>
+          {copy.company} <span aria-hidden="true">*</span>
+          <input
+            name="company"
+            autocomplete="organization"
+            required
+            maxlength="160"
+          />
+        </label>
+      </div>
+      <label>
+        {copy.email} <span aria-hidden="true">*</span>
+        <input
+          name="email"
+          type="email"
+          autocomplete="email"
+          required
+          maxlength="254"
+        />
+      </label>
+      <label>
+        {copy.project} <span aria-hidden="true">*</span>
+        <textarea
+          name="project"
+          rows="6"
+          required
+          minlength="20"
+          maxlength="6000"
+          placeholder={copy.placeholder}
+        ></textarea>
+      </label>
+      <p class="form-note">{copy.note}</p>
+      <button
+        id="download-enquiry"
+        class="button button-primary"
+        type="submit"
+        disabled
+      >
+        {copy.download}{' '}
+        <span class="button-icon button-icon-down" aria-hidden="true">
+          ↓
+        </span>
+      </button>
+      <noscript>
+        <p class="form-note">{copy.noscript}</p>
+      </noscript>
+      <p id="form-status" role="status" aria-live="polite"></p>
+    </form>
+  </section>
+</Base>
+<script>
+  interface Draft {
+    title: string;
+    notSent: string;
+    name: string;
+    company: string;
+    email: string;
+    project: string;
+    file: string;
+    status: string;
+  }
+  const form = document.querySelector<HTMLFormElement>('#enquiry-form');
+  const button = document.querySelector<HTMLButtonElement>('#download-enquiry');
+  if (form && button) {
+    const t = JSON.parse(form.dataset.draft ?? '{}') as Draft;
+    button.disabled = false;
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+      const data = new FormData(form);
+      const draft = `${t.title}\n${t.notSent}\n\n${t.name}: ${data.get('name')}\n${t.company}: ${data.get('company')}\n${t.email}: ${data.get('email')}\n\n${t.project}\n${data.get('project')}\n`;
+      const url = URL.createObjectURL(
+        new Blob([draft], { type: 'text/plain;charset=utf-8' }),
+      );
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = t.file;
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      const status = document.querySelector('#form-status');
+      if (status) status.textContent = t.status;
+    });
+  }
+</script>

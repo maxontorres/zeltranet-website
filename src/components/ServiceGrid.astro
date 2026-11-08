@@ -1,9 +1,12 @@
 ---
 import { services } from '../data/company';
+import { logos } from '../data/logos';
+import { ui, type Locale } from '../i18n';
 interface Props {
+  lang: Locale;
   detailed?: boolean;
 }
-const { detailed = false } = Astro.props;
+const { lang, detailed = false } = Astro.props;
 ---
 
 <div class="service-grid">
@@ -32,10 +35,23 @@ const { detailed = false } = Astro.props;
             stroke-width="1.2"
           />
         </svg>
+        <ul class="card-logos" aria-label={ui[lang].exampleTools}>
+          {service.logos.map((name) => (
+            <li title={logos[name].title}>
+              <svg
+                viewBox="0 0 24 24"
+                role="img"
+                aria-label={logos[name].title}
+              >
+                <path d={logos[name].path} fill="currentColor" />
+              </svg>
+            </li>
+          ))}
+        </ul>
       </div>
-      <h3>{service.title}</h3>
-      <p>{service.text}</p>
-      {detailed && <p>{service.detail}</p>}
+      <h3>{service.copy[lang].title}</h3>
+      <p>{service.copy[lang].text}</p>
+      {detailed && <p>{service.copy[lang].detail}</p>}
     </article>
   ))}
 </div>

@@ -13,11 +13,17 @@ import Base from '../layouts/Base.astro';
       A missing connection<span class="blue-text">.</span>
     </h1>
     <p>The page you’re looking for could not be found.</p>
-    <a class="button button-primary" href="/">
-      Return to homepage{' '}
-      <span class="button-icon" aria-hidden="true">
-        →
-      </span>
-    </a>
+    <p lang="es">No encontramos la página que busca.</p>
+    <div class="hero-actions">
+      <a class="button button-primary" href="/">
+        Return to homepage{' '}
+        <span class="button-icon" aria-hidden="true">
+          →
+        </span>
+      </a>
+      <a class="text-link" href="/es/" lang="es" hreflang="es">
+        Ir al inicio en español <span aria-hidden="true">→</span>
+      </a>
+    </div>
   </section>
 </Base>

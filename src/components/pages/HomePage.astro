@@ -1,0 +1,235 @@
+---
+import Arrow from '../Arrow.astro';
+import Base from '../../layouts/Base.astro';
+import Earth from '../Earth.astro';
+import Icon from '../Icon.astro';
+import ServiceGrid from '../ServiceGrid.astro';
+import ContactBand from '../ContactBand.astro';
+import FounderPhoto from '../FounderPhoto.astro';
+import WorkTeaser from '../WorkTeaser.astro';
+import { experience } from '../../data/company';
+import { routes, ui, type Locale } from '../../i18n';
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const copy = {
+  en: {
+    title: 'Zeltranet — Software Engineering & Systems Integration',
+    description:
+      'Independent software engineering company based in Mexico and Laos. Business applications, systems integration, and AI automation for businesses in Mexico, Laos, Thailand, Malaysia, and beyond.',
+    specialties: 'Software Engineering · Systems Integration · AI Automation',
+    tagline: ['Reliable software systems.', 'Built for the way you work.'],
+    intro:
+      'We build software that connects your systems, simplifies your operations, and helps your business work more efficiently.',
+    explore: 'Explore our services',
+    region: [
+      'Based in ',
+      'Mexico',
+      ' and ',
+      'Laos',
+      '. Working with businesses in Thailand, Malaysia, and internationally.',
+    ],
+    buildTitle: 'What we build',
+    buildLead: [
+      'Practical engineering.',
+      'From a single workflow to a connected business.',
+    ],
+    ourServices: 'Our services',
+    experienceTitle: 'Selected experience',
+    experienceLead: ['Real-world context.', 'Thoughtful technical decisions.'],
+    informed: ['Engineering informed', 'by practical experience.'],
+    informedText:
+      'Zeltranet draws on its founder’s experience with healthcare platforms, data collection systems, business applications, and cloud deployments.',
+    facts: [
+      ['Since 2015', 'building and maintaining software for businesses'],
+      ['4 countries', 'Mexico, Thailand, China, and Laos'],
+    ],
+    attribution:
+      'This background comes from work performed before Zeltranet. It is founder experience, not a portfolio of Zeltranet client projects.',
+    background: 'Explore the background',
+    approach: ['Understand the business.', 'Engineer the right system.'],
+    approachText:
+      'We start with how your business operates. Then we choose the technology, define the scope, and build software that your team can depend on.',
+    founded: 'Founded by Maximiliano Brito Torres.',
+    aboutLink: 'About Zeltranet',
+  },
+  es: {
+    title: 'Zeltranet — Ingeniería de software e integración de sistemas',
+    description:
+      'Empresa independiente de ingeniería de software con sede en México y Laos. Aplicaciones empresariales, integración de sistemas y automatización con IA para empresas en México, Laos, Tailandia, Malasia y otros países.',
+    specialties:
+      'Ingeniería de software · Integración de sistemas · Automatización con IA',
+    tagline: [
+      'Sistemas de software confiables.',
+      'Hechos para su forma de trabajar.',
+    ],
+    intro:
+      'Creamos software que conecta sus sistemas, simplifica sus operaciones y ayuda a su empresa a trabajar con mayor eficiencia.',
+    explore: 'Conozca nuestros servicios',
+    region: [
+      'Con sede en ',
+      'México',
+      ' y ',
+      'Laos',
+      '. Trabajamos con empresas en Tailandia, Malasia y a nivel internacional.',
+    ],
+    buildTitle: 'Lo que construimos',
+    buildLead: [
+      'Ingeniería práctica.',
+      'Desde un solo proceso hasta una empresa conectada.',
+    ],
+    ourServices: 'Nuestros servicios',
+    experienceTitle: 'Experiencia seleccionada',
+    experienceLead: [
+      'Contexto del mundo real.',
+      'Decisiones técnicas bien pensadas.',
+    ],
+    informed: ['Ingeniería basada', 'en experiencia práctica.'],
+    informedText:
+      'Zeltranet se apoya en la experiencia de su fundador con plataformas de salud, sistemas de recolección de datos, aplicaciones empresariales y despliegues en la nube.',
+    facts: [
+      ['Desde 2015', 'creando y manteniendo software para empresas'],
+      ['4 países', 'México, Tailandia, China y Laos'],
+    ],
+    attribution:
+      'Esta trayectoria proviene de trabajo realizado antes de Zeltranet. Es experiencia del fundador, no un portafolio de proyectos de clientes de Zeltranet.',
+    background: 'Conozca la trayectoria',
+    approach: ['Entender el negocio.', 'Diseñar el sistema correcto.'],
+    approachText:
+      'Empezamos por entender cómo opera su empresa. Después elegimos la tecnología, definimos el alcance y construimos software en el que su equipo pueda confiar.',
+    founded: 'Fundada por Maximiliano Brito Torres.',
+    aboutLink: 'Acerca de Zeltranet',
+  },
+}[lang];
+const [before, place1, middle, place2, after] = copy.region;
+---
+
+<Base title={copy.title} description={copy.description} lang={lang} page="home">
+  <section class="hero container">
+    <div class="hero-copy">
+      <h1>
+        <span class="hero-glow">Zeltranet</span>
+        <span class="hero-period">.</span>
+      </h1>
+      <p class="hero-specialties">{copy.specialties}</p>
+      <p class="hero-description">
+        {copy.tagline[0]}
+        <br />
+        <span>{copy.tagline[1]}</span>
+      </p>
+      <p class="hero-intro">{copy.intro}</p>
+      <div class="hero-actions">
+        <a href={routes.contact[lang]} class="button button-primary">
+          {ui[lang].discuss}{' '}
+          <span class="button-icon">
+            <Arrow />
+          </span>
+        </a>
+        <a href={routes.services[lang]} class="text-link">
+          {copy.explore} <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+    <Earth lang={lang} scroll />
+  </section>
+  <div class="region-strip">
+    <div class="container">
+      <p>
+        {before}
+        <strong>{place1}</strong>
+        {middle}
+        <strong>{place2}</strong>
+        {after}
+      </p>
+    </div>
+  </div>
+  <section class="section container" aria-labelledby="build-heading">
+    <div class="section-heading">
+      <div>
+        <h2 id="build-heading">
+          {copy.buildTitle}
+          <span class="blue-text">.</span>
+        </h2>
+      </div>
+      <p>
+        {copy.buildLead[0]}
+        <br />
+        {copy.buildLead[1]}
+      </p>
+    </div>
+    <ServiceGrid lang={lang} />
+    <div class="section-end">
+      <a class="text-link" href={routes.services[lang]}>
+        {copy.ourServices} <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </section>
+  <WorkTeaser lang={lang} />
+  <section class="experience-section">
+    <div class="container section">
+      <div class="section-heading">
+        <div>
+          <h2>
+            {copy.experienceTitle}
+            <span class="blue-text">.</span>
+          </h2>
+        </div>
+        <p>
+          {copy.experienceLead[0]}
+          <br />
+          {copy.experienceLead[1]}
+        </p>
+      </div>
+      <div class="experience-layout">
+        <div class="experience-intro">
+          <h3>
+            {copy.informed[0]}
+            <br />
+            {copy.informed[1]}
+          </h3>
+          <p>{copy.informedText}</p>
+          <dl class="founder-facts">
+            {copy.facts.map(([term, detail]) => (
+              <div>
+                <dt>{term}</dt>
+                <dd>{detail}</dd>
+              </div>
+            ))}
+          </dl>
+          <p class="attribution">{copy.attribution}</p>
+          <a href={routes.experience[lang]} class="text-link">
+            {copy.background} <span aria-hidden="true">→</span>
+          </a>
+        </div>
+        <div class="experience-list">
+          {experience.slice(0, 4).map((item) => (
+            <a class="experience-row" href={routes.experience[lang]}>
+              <Icon path={item.icon} />
+              <h3>{item.copy[lang].title}</h3>
+              <span class="row-arrow">
+                <Arrow />
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="about-strip container">
+    <FounderPhoto lang={lang} />
+    <div>
+      <h2>
+        {copy.approach[0]}
+        <br />
+        {copy.approach[1]}
+      </h2>
+      <p>{copy.approachText}</p>
+      <p class="founded">{copy.founded}</p>
+      <a class="text-link" href={routes.about[lang]}>
+        {copy.aboutLink} <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </section>
+  <ContactBand lang={lang} />
+</Base>

@@ -2,26 +2,41 @@
 import Arrow from '../components/Arrow.astro';
 import '../styles/global.css';
 import Mark from '../components/Mark.astro';
+import {
+  languages,
+  locales,
+  routes,
+  ui,
+  type Locale,
+  type RouteKey,
+} from '../i18n';
 interface Props {
   title: string;
   description: string;
+  lang?: Locale;
+  /** The page's route key; links the language toggle to its translation. */
+  page?: RouteKey;
   noindex?: boolean;
 }
-const { title, description, noindex = false } = Astro.props;
+const { title, description, lang = 'en', page, noindex = false } = Astro.props;
+const t = ui[lang];
 const canonical = Astro.site
   ? new URL(Astro.url.pathname, Astro.site).href
   : undefined;
-const nav = [
-  ['Home', '/'],
-  ['Services', '/services/'],
-  ['Experience', '/experience/'],
-  ['About', '/about/'],
-  ['Contact', '/contact/'],
-];
+const alternates =
+  Astro.site && page
+    ? locales.map((locale) => ({
+        locale,
+        href: new URL(routes[page][locale], Astro.site).href,
+      }))
+    : [];
+const nav = (
+  ['home', 'services', 'work', 'experience', 'about', 'contact'] as const
+).map((key) => ({ key, label: t.nav[key], href: routes[key][lang] }));
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -33,8 +48,24 @@ const nav = [
       content={canonical && !noindex ? 'index, follow' : 'noindex, nofollow'}
     />
     {canonical && <link rel="canonical" href={canonical} />}
+    {alternates.map(({ locale, href }) => (
+      <link rel="alternate" hreflang={locale} href={href} />
+    ))}
+    {alternates[0] && (
+      <link rel="alternate" hreflang="x-default" href={alternates[0].href} />
+    )}
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Zeltranet" />
+    <meta property="og:locale" content={languages[lang].ogLocale} />
+    {page &&
+      locales
+        .filter((locale) => locale !== lang)
+        .map((locale) => (
+          <meta
+            property="og:locale:alternate"
+            content={languages[locale].ogLocale}
+          />
+        ))}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     {canonical && <meta property="og:url" content={canonical} />}
@@ -54,23 +85,25 @@ const nav = [
       crossorigin
     />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     {Astro.site && <link rel="sitemap" href="/sitemap-index.xml" />}
   </head>
   <body>
     <a class="skip-link" href="#main">
-      Skip to content
+      {t.skip}
     </a>
     <header class="site-header">
       <div class="container header-inner">
-        <a href="/" class="brand" aria-label="Zeltranet home">
+        <a href={routes.home[lang]} class="brand" aria-label={t.home}>
           <Mark />
           <span>
             ZELTRANET<span class="brand-dot">.</span>
           </span>
         </a>
-        <nav aria-label="Main navigation">
-          {nav.map(([label, href]) => (
+        <nav aria-label={t.mainNav}>
+          {nav.map(({ key, label, href }) => (
             <a
+              class={key === 'home' ? 'nav-home' : undefined}
               href={href}
               aria-current={Astro.url.pathname === href ? 'page' : undefined}
             >
@@ -78,6 +111,23 @@ const nav = [
             </a>
           ))}
         </nav>
+        <div class="lang-switch" role="group" aria-label={t.language}>
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <circle cx="8" cy="8" r="6.25"></circle>
+            <path d="M1.75 8h12.5M8 1.75c1.7 1.7 2.5 3.8 2.5 6.25S9.7 12.55 8 14.25C6.3 12.55 5.5 10.45 5.5 8S6.3 3.45 8 1.75Z"></path>
+          </svg>
+          {locales.map((locale) => (
+            <a
+              href={routes[page ?? 'home'][locale]}
+              hreflang={locale}
+              lang={locale}
+              aria-label={languages[locale].name}
+              aria-current={locale === lang ? 'true' : undefined}
+            >
+              {languages[locale].short}
+            </a>
+          ))}
+        </div>
       </div>
     </header>
     <main id="main">
@@ -85,21 +135,22 @@ const nav = [
     </main>
     <footer class="site-footer">
       <div class="container footer-main">
-        <a class="brand" href="/" aria-label="Zeltranet home">
+        <a class="brand" href={routes.home[lang]} aria-label={t.home}>
           <Mark />
           <span>
             ZELTRANET<span class="brand-dot">.</span>
           </span>
         </a>
         <div class="footer-location">
-          <p>Independent software engineering.</p>
-          <p>Based in Mexico and Laos.</p>
+          <p>{t.footerTagline}</p>
+          <p>{t.footerBase}</p>
         </div>
       </div>
       <div class="container footer-bottom">
         <span>© {new Date().getUTCFullYear()} Zeltranet</span>
-        <a href="/contact/">
-          Let’s talk <Arrow />
+        <a href={routes.contact[lang]}>
+          {t.talk}
+          <Arrow />
         </a>
       </div>
     </footer>

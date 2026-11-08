@@ -1,0 +1,68 @@
+---
+import Base from '../../layouts/Base.astro';
+import ContactBand from '../ContactBand.astro';
+import Icon from '../Icon.astro';
+import { experience } from '../../data/company';
+import type { Locale } from '../../i18n';
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const copy = {
+  en: {
+    title: 'Founder Experience — Zeltranet',
+    description:
+      'The founder experience behind Zeltranet: healthcare platforms, data collection systems, business applications, and cloud deployments.',
+    heading: ['Experience behind', 'the engineering'],
+    intro:
+      'Zeltranet’s approach is informed by its founder’s work across business software and cloud systems.',
+    noticeLabel: 'A NOTE ON ATTRIBUTION',
+    notice:
+      'The experience below relates to the founder’s work before Zeltranet, including work performed for previous employers. These are areas of professional experience, not Zeltranet client engagements. No employer or client endorsement is implied.',
+  },
+  es: {
+    title: 'Experiencia del fundador — Zeltranet',
+    description:
+      'La experiencia del fundador detrás de Zeltranet: plataformas de salud, sistemas de recolección de datos, aplicaciones empresariales y despliegues en la nube.',
+    heading: ['La experiencia', 'detrás de la ingeniería'],
+    intro:
+      'El enfoque de Zeltranet se basa en el trabajo de su fundador en software empresarial y sistemas en la nube.',
+    noticeLabel: 'UNA NOTA SOBRE LA ATRIBUCIÓN',
+    notice:
+      'La experiencia descrita a continuación corresponde al trabajo del fundador antes de Zeltranet, incluido el trabajo realizado para empleadores anteriores. Son áreas de experiencia profesional, no proyectos de clientes de Zeltranet. No implica el respaldo de ningún empleador o cliente.',
+  },
+}[lang];
+---
+
+<Base
+  title={copy.title}
+  description={copy.description}
+  lang={lang}
+  page="experience"
+>
+  <section class="page-intro container">
+    <h1>
+      {copy.heading[0]}
+      <br />
+      {copy.heading[1]}
+      <span class="blue-text">.</span>
+    </h1>
+    <p>{copy.intro}</p>
+  </section>
+  <section class="container experience-detail">
+    <div class="notice">
+      <span class="eyebrow">{copy.noticeLabel}</span>
+      <p>{copy.notice}</p>
+    </div>
+    <div class="experience-grid">
+      {experience.map((item) => (
+        <article>
+          <Icon path={item.icon} />
+          <h2>{item.copy[lang].title}</h2>
+          <p>{item.copy[lang].text}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+  <ContactBand lang={lang} />
+</Base>

@@ -70,6 +70,7 @@
   --blue-hover: #7b9fff;
   --on-blue: #050608;
   --focus: #b7d7ff;
+  --error: #ffa3a3;
   --selection: #294b99;
   --quiet: #8a8fa0;
   --surface: #0e1520;
@@ -1131,6 +1132,20 @@ textarea::placeholder {
   font-size: 13px;
   color: var(--focus);
   margin-top: 18px;
+}
+#form-status[data-kind='error'] {
+  color: var(--error);
+}
+.cf-turnstile {
+  min-height: 65px;
+  margin-bottom: 22px;
+}
+.hp-field {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 }
 .not-found {
   padding-bottom: 90px;

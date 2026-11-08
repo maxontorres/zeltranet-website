@@ -2,5 +2,15 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "zeltranet-website",
   "compatibility_date": "2026-10-22",
-  "assets": { "directory": "./dist", "not_found_handling": "404-page" },
+  "main": "./worker/index.ts",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/api/*"],
+  },
+  // Secrets (set in the Cloudflare dashboard, never in this file):
+  // CONTACT_TO, TURNSTILE_SECRET_KEY. Optional: CONTACT_FROM.
+  "send_email": [{ "name": "EMAIL" }],
+  "observability": { "enabled": true },
 }

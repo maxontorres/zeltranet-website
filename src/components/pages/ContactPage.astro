@@ -1,16 +1,30 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Arrow from '../Arrow.astro';
 import type { Locale } from '../../i18n';
 import { email, whatsapp } from '../../data/company';
 interface Props {
   lang: Locale;
 }
 const { lang } = Astro.props;
+
+// Turnstile spam check. Cloudflare's public test key is used for previews;
+// a production build (SITE_URL set) must provide the real site key.
+const turnstileTestKey = '1x00000000000000000000AA';
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as
+  string | undefined;
+if (import.meta.env.SITE && !turnstileSiteKey) {
+  throw new Error(
+    'PUBLIC_TURNSTILE_SITE_KEY must be set for a production build (SITE_URL is set).',
+  );
+}
+const siteKey = turnstileSiteKey ?? turnstileTestKey;
+
 const copy = {
   en: {
     title: 'Contact - Zeltranet',
     description:
-      'Prepare a project enquiry for Zeltranet. Describe your business needs, existing systems, and the software you want to build.',
+      'Send a project enquiry to Zeltranet. Describe your business needs, existing systems, and the software you want to build.',
     heading: ['What needs', 'to work better'],
     intro:
       'A new application. A manual process. Systems that don’t talk to each other. Start with the problem your business needs to solve.',
@@ -24,35 +38,32 @@ const copy = {
     languagesLabel: 'LANGUAGES',
     languages: 'English and Spanish',
     noticeLabel: 'DIRECT CONTACT',
-    notice:
-      'Email us or message us on WhatsApp. The form on this page only prepares a local enquiry file; it does not send or store your information.',
+    notice: 'Prefer to write directly? Email us or message us on WhatsApp.',
     emailLabel: 'Email Zeltranet',
     whatsappLabel: 'Message Zeltranet on WhatsApp',
-    formTitle: 'Prepare a project enquiry',
-    formIntro: 'Download your draft, then send it to us by email or WhatsApp.',
+    formTitle: 'Send a project enquiry',
+    formIntro: 'We will reply to the email address you provide.',
     name: 'Your name',
     company: 'Company',
     email: 'Work email',
     project: 'What would you like to build or improve?',
     placeholder:
       'Your current process, the challenge, and what you want to achieve…',
-    note: 'All fields are required. Everything stays in your browser. No message is sent.',
-    download: 'Download enquiry draft',
+    note: 'All fields are required.',
+    send: 'Send enquiry',
     noscript:
-      'Enable JavaScript to download a draft, or contact us directly by email or WhatsApp.',
-    status: 'Your draft download has started. No message has been sent.',
-    draftTitle: 'ZELTRANET - PROJECT ENQUIRY DRAFT',
-    draftNotSent: 'This draft has not been sent.',
-    draftName: 'Name',
-    draftCompany: 'Company',
-    draftEmail: 'Email',
-    draftProject: 'Project',
-    file: 'zeltranet-project-enquiry.txt',
+      'The form needs JavaScript. You can also email us or message us on WhatsApp.',
+    sending: 'Sending your enquiry…',
+    sent: 'Thank you. Your enquiry has been sent, and we will reply by email.',
+    invalid: 'Please check the fields and try again.',
+    verification:
+      'Please complete the spam check above the button, then send again.',
+    unavailable: `Your enquiry could not be sent. Please email ${email.display} or message us on WhatsApp.`,
   },
   es: {
     title: 'Contacto - Zeltranet',
     description:
-      'Prepare una solicitud de proyecto para Zeltranet. Describa las necesidades de su empresa, sus sistemas actuales y el software que quiere construir.',
+      'Envíe una solicitud de proyecto a Zeltranet. Describa las necesidades de su empresa, sus sistemas actuales y el software que quiere construir.',
     heading: ['¿Qué necesita', 'funcionar mejor'],
     intro:
       'Una nueva aplicación. Un proceso manual. Sistemas que no se comunican entre sí. Empiece por el problema que su empresa necesita resolver.',
@@ -67,40 +78,34 @@ const copy = {
     languages: 'Inglés y español',
     noticeLabel: 'CONTACTO DIRECTO',
     notice:
-      'Escríbanos por correo o por WhatsApp. El formulario de esta página solo prepara un archivo de solicitud local; no envía ni almacena su información.',
+      '¿Prefiere escribirnos directamente? Envíenos un correo o un mensaje por WhatsApp.',
     emailLabel: 'Escribir un correo a Zeltranet',
     whatsappLabel: 'Escribir a Zeltranet por WhatsApp',
-    formTitle: 'Prepare una solicitud de proyecto',
-    formIntro: 'Descargue su borrador y envíenoslo por correo o por WhatsApp.',
+    formTitle: 'Envíe una solicitud de proyecto',
+    formIntro: 'Le responderemos al correo que nos indique.',
     name: 'Su nombre',
     company: 'Empresa',
     email: 'Correo de trabajo',
     project: '¿Qué le gustaría construir o mejorar?',
     placeholder: 'Su proceso actual, el reto y lo que quiere lograr…',
-    note: 'Todos los campos son obligatorios. Todo permanece en su navegador. No se envía ningún mensaje.',
-    download: 'Descargar borrador',
+    note: 'Todos los campos son obligatorios.',
+    send: 'Enviar solicitud',
     noscript:
-      'Active JavaScript para descargar un borrador, o escríbanos directamente por correo o por WhatsApp.',
-    status:
-      'La descarga de su borrador ha comenzado. No se ha enviado ningún mensaje.',
-    draftTitle: 'ZELTRANET - BORRADOR DE SOLICITUD DE PROYECTO',
-    draftNotSent: 'Este borrador no ha sido enviado.',
-    draftName: 'Nombre',
-    draftCompany: 'Empresa',
-    draftEmail: 'Correo',
-    draftProject: 'Proyecto',
-    file: 'zeltranet-solicitud-de-proyecto.txt',
+      'El formulario necesita JavaScript. También puede escribirnos por correo o por WhatsApp.',
+    sending: 'Enviando su solicitud…',
+    sent: 'Gracias. Su solicitud fue enviada y le responderemos por correo.',
+    invalid: 'Revise los campos e intente de nuevo.',
+    verification:
+      'Complete la verificación antiespam sobre el botón y vuelva a enviar.',
+    unavailable: `No pudimos enviar su solicitud. Escríbanos a ${email.display} o por WhatsApp.`,
   },
 }[lang];
-const draft = {
-  title: copy.draftTitle,
-  notSent: copy.draftNotSent,
-  name: copy.draftName,
-  company: copy.draftCompany,
-  email: copy.draftEmail,
-  project: copy.draftProject,
-  file: copy.file,
-  status: copy.status,
+const messages = {
+  sending: copy.sending,
+  sent: copy.sent,
+  invalid: copy.invalid,
+  verification: copy.verification,
+  unavailable: copy.unavailable,
 };
 ---
 
@@ -154,7 +159,11 @@ const draft = {
         </a>
       </div>
     </aside>
-    <form id="enquiry-form" data-draft={JSON.stringify(draft)}>
+    <form
+      id="enquiry-form"
+      data-lang={lang}
+      data-messages={JSON.stringify(messages)}
+    >
       <h2>{copy.formTitle}</h2>
       <p class="form-intro">{copy.formIntro}</p>
       <div class="form-pair">
@@ -193,16 +202,23 @@ const draft = {
           placeholder={copy.placeholder}
         ></textarea>
       </label>
+      <div class="hp-field" aria-hidden="true">
+        <label>
+          Website
+          <input name="website" tabindex="-1" autocomplete="off" />
+        </label>
+      </div>
       <p class="form-note">{copy.note}</p>
+      <div id="turnstile" class="cf-turnstile" data-sitekey={siteKey}></div>
       <button
-        id="download-enquiry"
+        id="send-enquiry"
         class="button button-primary"
         type="submit"
         disabled
       >
-        {copy.download}{' '}
-        <span class="button-icon button-icon-down" aria-hidden="true">
-          ↓
+        {copy.send}{' '}
+        <span class="button-icon" aria-hidden="true">
+          <Arrow />
         </span>
       </button>
       <noscript>
@@ -213,36 +229,93 @@ const draft = {
   </section>
 </Base>
 <script>
-  interface Draft {
-    title: string;
-    notSent: string;
-    name: string;
-    company: string;
-    email: string;
-    project: string;
-    file: string;
-    status: string;
+  type Result = 'sent' | 'invalid' | 'verification' | 'unavailable';
+  type Messages = Record<Result | 'sending', string>;
+  interface Turnstile {
+    render(
+      element: HTMLElement,
+      options: Record<string, string | boolean>,
+    ): string;
+    reset(id?: string): void;
   }
+  const turnstileWindow = window as unknown as { turnstile?: Turnstile };
+
   const form = document.querySelector<HTMLFormElement>('#enquiry-form');
-  const button = document.querySelector<HTMLButtonElement>('#download-enquiry');
-  if (form && button) {
-    const t = JSON.parse(form.dataset.draft ?? '{}') as Draft;
+  const button = document.querySelector<HTMLButtonElement>('#send-enquiry');
+  const status = document.querySelector<HTMLElement>('#form-status');
+  const widget = document.querySelector<HTMLElement>('#turnstile');
+
+  // Load the Turnstile spam check. Narrow phones get the compact widget,
+  // because the normal one needs at least 300px.
+  if (widget) {
+    const script = document.createElement('script');
+    script.src =
+      'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+    script.async = true;
+    script.addEventListener('load', () => {
+      turnstileWindow.turnstile?.render(widget, {
+        sitekey: widget.dataset.sitekey ?? '',
+        theme: 'dark',
+        language: document.documentElement.lang || 'auto',
+        size: widget.clientWidth < 300 ? 'compact' : 'flexible',
+      });
+    });
+    document.head.append(script);
+  }
+
+  if (form && button && status) {
+    const t = JSON.parse(form.dataset.messages ?? '{}') as Messages;
+    const show = (text: string, kind: 'info' | 'success' | 'error') => {
+      status.textContent = text;
+      status.dataset.kind = kind;
+    };
+    const resetCheck = () => turnstileWindow.turnstile?.reset();
+
     button.disabled = false;
-    form.addEventListener('submit', (event) => {
+    form.addEventListener('submit', async (event) => {
       event.preventDefault();
       if (!form.reportValidity()) return;
       const data = new FormData(form);
-      const draft = `${t.title}\n${t.notSent}\n\n${t.name}: ${data.get('name')}\n${t.company}: ${data.get('company')}\n${t.email}: ${data.get('email')}\n\n${t.project}\n${data.get('project')}\n`;
-      const url = URL.createObjectURL(
-        new Blob([draft], { type: 'text/plain;charset=utf-8' }),
-      );
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = t.file;
-      link.click();
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
-      const status = document.querySelector('#form-status');
-      if (status) status.textContent = t.status;
+      const token = String(data.get('cf-turnstile-response') ?? '');
+      if (!token) {
+        show(t.verification, 'error');
+        return;
+      }
+
+      button.disabled = true;
+      form.setAttribute('aria-busy', 'true');
+      show(t.sending, 'info');
+      let result: Result = 'unavailable';
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: data.get('name'),
+            company: data.get('company'),
+            email: data.get('email'),
+            project: data.get('project'),
+            website: data.get('website'),
+            token,
+            lang: form.dataset.lang,
+          }),
+        });
+        const body = (await response.json()) as { result?: Result };
+        if (body.result && body.result in t) result = body.result;
+      } catch {
+        result = 'unavailable';
+      }
+
+      button.disabled = false;
+      form.removeAttribute('aria-busy');
+      if (result === 'sent') {
+        form.reset();
+        show(t.sent, 'success');
+      } else {
+        show(t[result], 'error');
+      }
+      // Turnstile tokens work once, so get a fresh one for the next send.
+      resetCheck();
     });
   }
 </script>

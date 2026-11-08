@@ -10,7 +10,9 @@ export default defineConfig(
   ...tseslint.configs.recommended,
   ...astro.configs.recommended,
   {
-    files: ['*.mjs'],
-    languageOptions: { globals: { process: 'readonly', URL: 'readonly' } },
+    files: ['**/*.mjs'],
+    languageOptions: {
+      globals: { process: 'readonly', URL: 'readonly', console: 'readonly' },
+    },
   },
 );

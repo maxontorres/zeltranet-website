@@ -1,6 +1,6 @@
 # Zeltranet website
 
-Static company website for Zeltranet, an independent software engineering company based in Mexico and Laos. Built with Astro, strict TypeScript, and Tailwind CSS v4. No frontend framework, database, CMS, analytics, remote fonts, or external contact service.
+Static company website for Zeltranet, an independent software engineering company based in Mexico and Laos. Built with Astro, strict TypeScript, and Tailwind CSS v4. No frontend framework, database, CMS, analytics, or remote fonts. One small Cloudflare Worker delivers contact form enquiries by email.
 
 ## Quick start (if you already have Node.js 24)
 
@@ -191,10 +191,12 @@ npm ci
 - `src/data/earth-coastlines.json`: simplified geographic linework from the owner-supplied MaxonTorres.com globe (retrieved 2026-10-22).
 - `src/lib/earth.ts`: shared projection geometry for the static SVG and animated canvas.
 - `src/styles/global.css`: Tailwind import, design tokens, responsive styling, reduced-motion handling.
-- `public/`: favicon and Cloudflare security/cache headers.
-- `wrangler.jsonc`: Cloudflare Workers Static Assets configuration; no Worker runtime or paid binding required.
+- `public/`: favicon, social share images (`og-en.png`, `og-es.png`), and Cloudflare security/cache headers.
+- `design/og/`: source for the share images. Regenerate with `node design/og/render.mjs` (uses a local Chrome or Edge).
+- `worker/index.ts`: Cloudflare Worker. Serves the static site and handles `POST /api/contact`: checks the fields and the Turnstile spam token, then emails the enquiry through Cloudflare Email Service.
+- `wrangler.jsonc`: Worker, static assets, and `send_email` binding configuration.
 
-All pages are static HTML. Contact loads client JavaScript for downloading a plain-text enquiry draft. The homepage also loads a small standalone canvas Earth animation, adapted from the owner’s MaxonTorres.com globe without React or a rendering dependency. It has a server-rendered SVG fallback, a pause control, reduced-motion support, a 24 fps limit, capped pixel density, and suspends animation when offscreen or the tab is hidden. No information is sent or stored by the website. The form is clearly labelled and the download control stays disabled without JavaScript. CSP allows same-origin assets only and blocks form submission. Update headers deliberately if an approved delivery mechanism is added.
+All pages are static HTML. Contact loads client JavaScript that sends the form to `/api/contact` and loads Cloudflare Turnstile (spam check). The homepage also loads a small standalone canvas Earth animation, adapted from the owner’s MaxonTorres.com globe without React or a rendering dependency. It has a server-rendered SVG fallback, a pause control, reduced-motion support, a 24 fps limit, capped pixel density, and suspends animation when offscreen or the tab is hidden. The website stores nothing; enquiries are emailed and not kept. The send button stays disabled without JavaScript, and the page shows the email address and WhatsApp number as alternatives. CSP allows same-origin assets plus Turnstile (`challenges.cloudflare.com`) for scripts and frames.
 
 The visual language uses dark navy, graphite, blue accents, technical linework, a single soft glow in the homepage hero, and display typography adapted from MaxonTorres.com. The accent matches the owner’s MaxonTorres.com palette, checked on 2026-10-22.
 
@@ -213,9 +215,9 @@ Project conventions for contributors (and AI agents) are in [`AGENTS.md`](AGENTS
 
 ## SEO and domain configuration
 
-No public domain has been supplied. Builds without `SITE_URL` intentionally omit canonical URLs and sitemap, emit `noindex, nofollow`, and disallow crawling. This keeps an unconfigured preview from advertising an invented domain.
+The production domain is `https://zeltranet.com`. Builds without `SITE_URL` intentionally omit canonical URLs and sitemap, emit `noindex, nofollow`, and disallow crawling. This keeps an unconfigured preview from advertising an invented domain.
 
-Once a domain is confirmed, set the environment variable **during the build**:
+Set the environment variable **during the build**:
 
 ```sh
 # macOS / Linux / Git Bash
@@ -227,28 +229,35 @@ SITE_URL=https://your-confirmed-domain.com npm run build
 $env:SITE_URL = "https://your-confirmed-domain.com"; npm run build; Remove-Item Env:SITE_URL
 ```
 
-Use an HTTPS origin without a path. Astro's sitemap integration generates `dist/sitemap-index.xml` and its linked sitemap; `robots.txt` references it. Canonical and Open Graph URLs use the same origin. The custom 404 should remain unindexed. No browser secrets or environment variables are needed.
+Use an HTTPS origin without a path. Astro's sitemap integration generates `dist/sitemap-index.xml` and its linked sitemap; `robots.txt` references it. Canonical and Open Graph URLs use the same origin. Each page also gets an Open Graph and Twitter share image (`/og-en.png` or `/og-es.png`, 1200x630), and the homepages include schema.org Organization and WebSite data. The custom 404 should remain unindexed. A production build also requires `PUBLIC_TURNSTILE_SITE_KEY` (see below).
 
 A local `.env.example` documents the setting. `astro.config.mjs` reads the process environment, so export the value in your shell or build provider. Copying it to `.env` does **not** configure this build.
 
-## Cloudflare Workers Static Assets
+## Cloudflare deployment
 
-Deployment has **not** been performed. These are instructions for a later approved release. This static architecture needs no paid services; check current Cloudflare free-tier quotas before launch.
+The site deploys as the Worker `zeltranet-website` through Cloudflare Git builds from `main`: build command `npm run build`, deploy command `npx wrangler deploy`. Keep API tokens out of the repository.
 
-1. Confirm the public domain and contact channel; review company copy and founder attribution.
-2. Run `npm ci` and `npm run validate`.
-3. Build with the confirmed `SITE_URL` as shown above.
-4. Optionally inspect locally with `npx wrangler dev` (serves `dist` with Cloudflare asset handling).
-5. After deployment approval and Cloudflare authentication, run `npx wrangler deploy` from this directory. Wrangler uses `./dist` and the Worker name `zeltranet-website`.
-6. Configure the approved custom domain in Cloudflare. Check every route in both languages, the AI Automator app, an unknown route, headers, mobile layout, enquiry download, robots, and sitemap on the live origin.
+**Build variables** (Settings, Build, Variables and secrets):
 
-For Cloudflare Git builds, use `npm run build`, supply `SITE_URL` as a build variable, and use `npx wrangler deploy` as the deployment command. There is no automatic deployment workflow here. Keep API tokens out of the repository.
+- `SITE_URL` = `https://zeltranet.com`
+- `PUBLIC_TURNSTILE_SITE_KEY` = the Turnstile widget site key (public)
+
+**Worker secrets** (Settings, Variables and secrets, type Secret):
+
+- `CONTACT_TO`: where enquiries are delivered. Must be a verified Email Routing destination address.
+- `TURNSTILE_SECRET_KEY`: the Turnstile widget secret key.
+- `CONTACT_FROM` (optional): sender address, default `website@zeltranet.com`. Must be on a domain onboarded to Cloudflare Email Service.
+
+If a secret is missing, the form shows the email and WhatsApp alternatives instead of failing silently.
+
+**Local testing:** create `.dev.vars` (git-ignored) with `CONTACT_TO` and the Cloudflare test secret `TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA`, run `npm run build`, then `npx wrangler dev`. Without `PUBLIC_TURNSTILE_SITE_KEY` the page uses the Cloudflare always-pass test key. Emails are simulated locally and written under `.wrangler/`. Restart `wrangler dev` after each build. `npm run dev` has no `/api` route.
+
+After a deploy, check every route in both languages, the AI Automator app, an unknown route, headers, mobile layout, a real form submission, robots, and sitemap on the live origin.
 
 ## Content and launch limitations
 
-- Contact delivery awaits a confirmed business address or an approved service. The draft download works locally but cannot contact Zeltranet.
+- Contact: form enquiries go to the `CONTACT_TO` secret; the site also lists hello@zeltranet.com (Cloudflare Email Routing) and WhatsApp.
 - Experience is explicitly the founder's prior professional experience, not a Zeltranet client portfolio. No client names, metrics, endorsements, or unprovided history are asserted.
 - English and Spanish. Spanish pages use Spanish slugs (see `src/i18n/index.ts`).
 - The AI Automator is presented as a Zeltranet product. Its workspace and screenshots use example companies and figures, noted on the Work page; they are not client projects or results.
-- Source is hosted in `maxontorres/zeltranet-website`. The website has not been deployed; deployment requires separate approval.
-- Before launch, confirm domain/contact details, review factual copy, and check the deployed Cloudflare headers and 404 behavior.
+- Source is hosted in `maxontorres/zeltranet-website` and deployed to Cloudflare from `main`.

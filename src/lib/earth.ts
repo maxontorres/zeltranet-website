@@ -44,8 +44,8 @@ export function project(point: Vector, rotation: number, lift = 1) {
   const z = -point[0] * sine + point[2] * cosine;
   const y = 0.9286646 * point[1] - 0.3709205 * z;
   return {
-    x: 270 + 157 * lift * x,
-    y: 200 - 157 * lift * y,
+    x: 270 + 172 * lift * x,
+    y: 200 - 172 * lift * y,
     z: 0.3709205 * point[1] + 0.9286646 * z,
     outside: (x * x + y * y) * lift * lift > 1,
   };

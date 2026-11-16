@@ -490,6 +490,13 @@ nav a:last-child[aria-current] {
 .earth {
   position: relative;
   min-width: 0;
+  pointer-events: none;
+}
+@media (min-width: 761px) {
+  .earth {
+    scale: 1.25;
+    transform-origin: right center;
+  }
 }
 .region-strip {
   border-block: 1px solid var(--line);
@@ -1619,55 +1626,12 @@ main > :not(.hero) {
 .earth[data-animated='true'] .earth-fallback {
   visibility: hidden;
 }
-.earth-toggle {
-  position: absolute;
-  right: 4px;
-  bottom: 4px;
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  border: 1px solid var(--line-accent);
-  border-radius: 50%;
-  background: var(--panel);
-  color: var(--focus);
-  box-shadow: var(--shadow-card);
-  cursor: pointer;
-}
-.earth-toggle svg {
-  width: 14px;
-  height: 14px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.6;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-.earth-toggle .icon-play,
-.earth-toggle[aria-pressed='true'] .icon-pause {
-  display: none;
-}
-.earth-toggle[aria-pressed='true'] .icon-play {
-  display: inline;
-}
-.earth-toggle:hover {
-  color: var(--text);
-  border-color: var(--blue);
-}
-.earth-toggle[hidden] {
-  display: none;
-}
 /* Touch screens of any width (phones and tablets): comfortable tap targets,
    and 16px inputs so iOS does not zoom in on focus. */
 @media (pointer: coarse) {
   .brand,
   .text-link {
     min-height: 44px;
-  }
-  .earth .earth-toggle {
-    width: 44px;
-    height: 44px;
   }
   .lang-switch a {
     min-width: 46px;

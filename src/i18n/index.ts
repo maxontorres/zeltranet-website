@@ -42,8 +42,6 @@ export const ui = {
     talk: 'Let’s talk',
     discuss: 'Discuss your project',
     bandTitle: ['Good systems start with', 'a clear conversation.'],
-    pauseGlobe: 'Pause globe rotation',
-    resumeGlobe: 'Resume globe rotation',
     exampleTools: 'Example platforms and tools',
   },
   es: {
@@ -64,8 +62,6 @@ export const ui = {
     talk: 'Hablemos',
     discuss: 'Hablemos de su proyecto',
     bandTitle: ['Los buenos sistemas empiezan', 'con una conversación clara.'],
-    pauseGlobe: 'Pausar la rotación del globo',
-    resumeGlobe: 'Reanudar la rotación del globo',
     exampleTools: 'Plataformas y herramientas de ejemplo',
   },
 } as const satisfies Record<Locale, unknown>;

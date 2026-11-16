@@ -1,0 +1,88 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import ContactBand from '../ContactBand.astro';
+import { mxnUsd, toolScreen } from '../../data/tools';
+import type { Locale } from '../../i18n';
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const copy = {
+  en: {
+    title: 'Tools - Zeltranet',
+    description:
+      'Software tools from Zeltranet, including MXN to USD Transfer Intelligence for planning international bank transfers.',
+    eyebrow: 'ZELTRANET TOOLS',
+    heading: ['Practical tools', 'for everyday decisions'],
+    intro:
+      'Focused software tools from Zeltranet that turn public data and clear rules into plain-language answers.',
+    galleryTitle: 'Inside the tool',
+  },
+  es: {
+    title: 'Herramientas - Zeltranet',
+    description:
+      'Herramientas de software de Zeltranet, incluida MXN to USD Transfer Intelligence para planear transferencias bancarias internacionales.',
+    eyebrow: 'HERRAMIENTAS DE ZELTRANET',
+    heading: ['Herramientas prácticas', 'para decisiones cotidianas'],
+    intro:
+      'Herramientas de software de Zeltranet que convierten datos públicos y reglas claras en respuestas en lenguaje sencillo.',
+    galleryTitle: 'Dentro de la herramienta',
+  },
+}[lang];
+const t = mxnUsd.copy[lang];
+const steps = mxnUsd.screens.map((key) => ({
+  key,
+  image: toolScreen(key),
+  ...t.steps[key],
+}));
+---
+
+<Base
+  title={copy.title}
+  description={copy.description}
+  lang={lang}
+  page="tools"
+>
+  <section class="page-intro container">
+    <span class="eyebrow">{copy.eyebrow}</span>
+    <h1>
+      {copy.heading[0]}
+      <br />
+      {copy.heading[1]}
+      <span class="blue-text">.</span>
+    </h1>
+    <p>{copy.intro}</p>
+  </section>
+  <section class="container work-text" aria-labelledby="mxn-usd-heading">
+    <h2 id="mxn-usd-heading">
+      {mxnUsd.name}
+      <span class="blue-text">.</span>
+    </h2>
+    <p>{t.summary}</p>
+    <p class="work-hint">{t.stack}</p>
+  </section>
+  <section class="container work-gallery" aria-label={copy.galleryTitle}>
+    {steps.map((step) => (
+      <figure
+        class:list={['gallery-step', { 'gallery-phone': step.key === 'phone' }]}
+      >
+        <Picture
+          src={step.image}
+          alt={step.alt}
+          formats={['avif', 'webp']}
+          widths={[480, 720, 1080]}
+          sizes="(max-width: 1050px) calc(100vw - 32px), 760px"
+          loading="lazy"
+          decoding="async"
+        />
+        <figcaption>
+          <h3>{step.title}</h3>
+          <p>{step.detail}</p>
+        </figcaption>
+      </figure>
+    ))}
+    <p class="work-hint">{t.note}</p>
+  </section>
+  <ContactBand lang={lang} />
+</Base>

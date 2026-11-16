@@ -80,7 +80,15 @@ const structuredData =
       }
     : undefined;
 const nav = (
-  ['home', 'services', 'work', 'experience', 'about', 'contact'] as const
+  [
+    'home',
+    'services',
+    'work',
+    'tools',
+    'experience',
+    'about',
+    'contact',
+  ] as const
 ).map((key) => ({ key, label: t.nav[key], href: routes[key][lang] }));
 ---
 

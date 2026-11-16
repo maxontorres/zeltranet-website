@@ -978,6 +978,17 @@ nav a:last-child[aria-current] {
 .gallery-step:nth-of-type(even) picture {
   order: 2;
 }
+/* Phone-shaped frame around the mobile screenshot. */
+.gallery-phone img {
+  max-width: 320px;
+  margin-inline: auto;
+  padding: 0;
+  border: 12px solid #151a26;
+  border-radius: 38px;
+  box-shadow:
+    0 0 0 1px var(--line),
+    var(--shadow-card);
+}
 .gallery-step h3 {
   font-size: 18px;
   margin-block: 12px 14px;
@@ -1214,6 +1225,28 @@ textarea::placeholder {
     font-size: 14px;
   }
 }
+/* Seven nav links do not fit beside the wordmark and language toggle on
+   tablets, so the menu moves to its own row, as it does on phones. */
+@media (max-width: 1120px) {
+  .header-inner {
+    flex-wrap: wrap;
+    gap: 0 24px;
+    padding-top: 22px;
+  }
+  nav {
+    order: 1;
+    width: 100%;
+    gap: 30px;
+  }
+  nav a {
+    padding: 16px 0 14px;
+    white-space: nowrap;
+  }
+  nav a:last-child {
+    margin-left: auto;
+    padding: 10px 17px;
+  }
+}
 @media (max-width: 760px) {
   .container {
     width: calc(100% - 40px);
@@ -1230,9 +1263,9 @@ textarea::placeholder {
   nav {
     order: 1;
     width: 100%;
-    justify-content: space-between;
-    gap: 10px;
-    overflow-x: auto;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 0 22px;
   }
   nav a {
     font-size: 13px;
@@ -1480,7 +1513,7 @@ textarea::placeholder {
   }
   /* Spanish labels run longer; tighten so all links fit without scrolling. */
   nav {
-    gap: 4px;
+    gap: 0 14px;
   }
   nav a {
     font-size: 12.5px;

@@ -1,0 +1,74 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import ContactBand from '../ContactBand.astro';
+import { mxnUsd, mxnUsdScreen } from '../../data/mxn-usd';
+import { routes, type Locale } from '../../i18n';
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const copy = {
+  en: {
+    title: 'MXN to USD Transfer Intelligence - Zeltranet',
+    description:
+      'Shows the MXN to USD rate and what a bank transfer costs after fees.',
+    back: 'All projects',
+  },
+  es: {
+    title: 'MXN to USD Transfer Intelligence - Zeltranet',
+    description:
+      'Muestra el tipo de cambio de MXN a USD y cuánto cuesta una transferencia bancaria con todo y comisiones.',
+    back: 'Todos los proyectos',
+  },
+}[lang];
+const t = mxnUsd.copy[lang];
+const steps = mxnUsd.screens.map((key) => ({
+  key,
+  image: mxnUsdScreen(key),
+  ...t.steps[key],
+}));
+---
+
+<Base
+  title={copy.title}
+  description={copy.description}
+  lang={lang}
+  page="mxnUsd"
+>
+  <section class="page-intro container">
+    <a class="text-link" href={routes.work[lang]}>
+      <span aria-hidden="true">←</span>
+      {copy.back}
+    </a>
+    <h1>
+      {mxnUsd.name}
+      <span class="blue-text">.</span>
+    </h1>
+    <p>{t.summary}</p>
+    <p class="work-hint">{t.stack}</p>
+  </section>
+  <section class="container work-gallery">
+    {steps.map((step) => (
+      <figure
+        class:list={['gallery-step', { 'gallery-phone': step.key === 'phone' }]}
+      >
+        <Picture
+          src={step.image}
+          alt={step.alt}
+          formats={['avif', 'webp']}
+          widths={[480, 720, 1080]}
+          sizes="(max-width: 1050px) calc(100vw - 32px), 760px"
+          loading="lazy"
+          decoding="async"
+        />
+        <figcaption>
+          <h3>{step.title}</h3>
+          <p>{step.detail}</p>
+        </figcaption>
+      </figure>
+    ))}
+    <p class="work-hint">{t.note}</p>
+  </section>
+  <ContactBand lang={lang} />
+</Base>

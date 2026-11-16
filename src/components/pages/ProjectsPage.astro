@@ -1,0 +1,100 @@
+---
+import { Picture } from 'astro:assets';
+import Arrow from '../Arrow.astro';
+import Base from '../../layouts/Base.astro';
+import ContactBand from '../ContactBand.astro';
+import { automator } from '../../data/work';
+import { screen } from '../../data/work-screens';
+import { mxnUsd, mxnUsdScreen } from '../../data/mxn-usd';
+import { routes, type Locale } from '../../i18n';
+interface Props {
+  lang: Locale;
+}
+const { lang } = Astro.props;
+const copy = {
+  en: {
+    title: 'Projects - Zeltranet',
+    description:
+      'Software built by Zeltranet: AI Automator for Quotes and Purchasing, and MXN to USD Transfer Intelligence.',
+    heading: 'Projects',
+    intro: 'Software we have built.',
+    view: 'View project',
+    try: 'Try it live',
+    automator:
+      'Turns customer requests into supplier quotes, prices, and purchase orders. For trading companies. A person approves every step.',
+  },
+  es: {
+    title: 'Proyectos - Zeltranet',
+    description:
+      'Software creado por Zeltranet: AI Automator for Quotes and Purchasing y MXN to USD Transfer Intelligence.',
+    heading: 'Proyectos',
+    intro: 'Software que hemos creado.',
+    view: 'Ver proyecto',
+    try: 'Pruébelo en vivo',
+    automator:
+      'Convierte solicitudes de clientes en cotizaciones de proveedores, precios y órdenes de compra. Para empresas comerciales. Una persona aprueba cada paso.',
+  },
+}[lang];
+const projects = [
+  {
+    name: automator.name,
+    text: copy.automator,
+    href: routes.automator[lang],
+    image: screen(lang, 'replies'),
+    live: automator.app,
+  },
+  {
+    name: mxnUsd.name,
+    text: mxnUsd.copy[lang].card,
+    href: routes.mxnUsd[lang],
+    image: mxnUsdScreen('dashboard'),
+    live: undefined,
+  },
+];
+---
+
+<Base title={copy.title} description={copy.description} lang={lang} page="work">
+  <section class="page-intro container">
+    <h1>
+      {copy.heading}
+      <span class="blue-text">.</span>
+    </h1>
+    <p>{copy.intro}</p>
+  </section>
+  {projects.map((project) => (
+    <section class="container section work-teaser">
+      <div class="work-teaser-copy">
+        <h2>
+          {project.name}
+          <span class="blue-text">.</span>
+        </h2>
+        <p>{project.text}</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href={project.href}>
+            {copy.view}{' '}
+            <span class="button-icon">
+              <Arrow />
+            </span>
+          </a>
+          {project.live && (
+            <a class="text-link" href={project.live}>
+              {copy.try} <span aria-hidden="true">→</span>
+            </a>
+          )}
+        </div>
+      </div>
+      <a class="work-shot" href={project.href} tabindex="-1" aria-hidden="true">
+        <Picture
+          src={project.image}
+          alt=""
+          formats={['avif', 'webp']}
+          widths={[560, 840, 1120]}
+          sizes="(max-width: 1050px) calc(100vw - 32px), 560px"
+          loading="lazy"
+          decoding="async"
+        />
+      </a>
+    </section>
+  ))}
+  <ContactBand lang={lang} />
+</Base>

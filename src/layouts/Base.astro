@@ -80,15 +80,7 @@ const structuredData =
       }
     : undefined;
 const nav = (
-  [
-    'home',
-    'services',
-    'work',
-    'tools',
-    'experience',
-    'about',
-    'contact',
-  ] as const
+  ['home', 'services', 'work', 'experience', 'about', 'contact'] as const
 ).map((key) => ({ key, label: t.nav[key], href: routes[key][lang] }));
 ---
 
@@ -178,7 +170,15 @@ const nav = (
             <a
               class={key === 'home' ? 'nav-home' : undefined}
               href={href}
-              aria-current={Astro.url.pathname === href ? 'page' : undefined}
+              aria-current={
+                (
+                  key === 'home'
+                    ? Astro.url.pathname === href
+                    : Astro.url.pathname.startsWith(href)
+                )
+                  ? 'page'
+                  : undefined
+              }
             >
               {label}
             </a>
